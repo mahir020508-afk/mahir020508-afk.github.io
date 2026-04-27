@@ -1,0 +1,190 @@
+{
+    "sirket_bilgisi": {
+        "isim": "Prohummer Türkiye",
+        "konum": "https://maps.app.goo.gl/VfAK9HTowqfTcmSV9",
+        "karsilama_mesaji": "Merhaba! Prohummer WhatsApp Destek Hattına hoş geldiniz. Hırdavat, bahçe veya el aletleri... Ne tür bir güce ihtiyacınız var, hemen yardımcı olayım."
+    },
+    "urunler": [
+        {
+            "id": "PH251",
+            "isim": "Prohummer PH251 Şarjlı Matkap Seti (84 Parça)",
+            "fiyat": "1990 TL",
+            "aciklama": "Kömürsüz 58vf 5ah, Çelik Şanzıman, Bakır Sargılı, Çift Akülü tam teşekküllü vidalama matkap seti."
+        },
+        {
+            "id": "PH201",
+            "isim": "Prohummer PH201 Çim ve Dal Biçme Makinesi",
+            "fiyat": "2499 TL",
+            "aciklama": "Teleskopik el tipi, çift bataryalı 58Vf ot, çim ve dal biçme tırpanı. Mavi renk."
+        },
+        {
+            "id": "PH224",
+            "isim": "Prohummer PH224 Profesyonel Basınçlı Oto Yıkama Makinesi",
+            "fiyat": "3490 TL",
+            "aciklama": "Profesyonel kömürsüz 58vf yüksek basınçlı çift akülü oto araba yıkama, sulama ve ilaçlama makinesi."
+        },
+        {
+            "id": "PH304",
+            "isim": "Prohummer PH304 Profesyonel 4'lü Kırmızı Set",
+            "fiyat": "9249 TL",
+            "aciklama": "350Nm somun sökme, sds plus kırıcı delici, 125mm avuç taşlama ve 13mm vidalama matkap içeren tam usta seti."
+        },
+        {
+            "id": "PH333",
+            "isim": "Prohummer PH333 Profesyonel Yeni Kırmızı 21V 4AH 5'li Set",
+            "fiyat": "6900 TL",
+            "aciklama": "1100NM Somun Sökme, Kırıcı Delici, Devir Ayarlı Avuç Taşlama, Matkap ve Dal Budama Testeresi bir arada."
+        },
+        {
+            "id": "PH217",
+            "isim": "Prohummer PH217 Mini Benzinli Testere",
+            "fiyat": "3890 TL",
+            "aciklama": "25cc portatif mini benzinli ağaç, odun ve dal budama kesme motoru."
+        },
+        {
+            "id": "PH196",
+            "isim": "Prohummer PH196 Darbesiz Matkap Seti",
+            "fiyat": "1999 TL",
+            "aciklama": "24 parça 58vf max darbesiz şarjlı vidalama matkap seti. Ev ve ofis kullanımı için ideal."
+        },
+        {
+            "id": "PH271",
+            "isim": "Prohummer PH271 150 Bar Elektrikli Yüksek Basınçlı Oto Yıkama",
+            "fiyat": "5599 TL",
+            "aciklama": "Elektrikli 150 Bar Musluk ve Kovadan Su Çekme Yüksek Basınçlı Bahçe ve Oto Yıkama."
+        },
+        {
+            "id": "PH-EA016",
+            "isim": "Prohummer PH-EA016 Mavi 13 mm 1100 W Elektrikli Darbeli Matkap",
+            "fiyat": "2510 TL",
+            "aciklama": "Yüksek performanslı elektrikli darbeli matkap."
+        },
+        {
+            "id": "PH190",
+            "isim": "Prohummer Ph190 Akülü 58Vf Lazer Terazi ve Vidalama Matkap",
+            "fiyat": "4249 TL",
+            "aciklama": "Lazer terazi entegreli akülü vidalama ve matkap sistemi."
+        },
+        {
+            "id": "PH011",
+            "isim": "Prohummer PH011 1400W Professional Elektrikli Daire Testere",
+            "fiyat": "2773 TL",
+            "aciklama": "Mavi renkli, 1400 Watt gücünde profesyonel elektrikli daire testere."
+        },
+        {
+            "id": "PH-TS033",
+            "isim": "Prohummer PH-TS033 3.5 Hp 46 cm Benzinli Ağaç Motoru",
+            "fiyat": "4604 TL",
+            "aciklama": "Ağır işler için 3.5 beygir gücünde benzinli ağaç kesme motoru."
+        },
+        {
+            "id": "EEA310",
+            "isim": "Prohummer Akülü Tilki Kuyruğu Testere 36V 5AH",
+            "fiyat": "3914 TL",
+            "aciklama": "Şarjlı, yüksek güçlü tilki kuyruğu testere, mavi renkli seri."
+        },
+        {
+            "id": "PH-KAYNAK",
+            "isim": "Prohummer Yeni Nesil Gazsız Gazaltı Kaynak Makinesi",
+            "fiyat": "9124 TL",
+            "aciklama": "220 Volt Çanta tipli 250 Amper yeni nesil kaynak makinesi."
+        },
+        {
+            "id": "PH263",
+            "isim": "Prohummer PH263 Teleskopik 4'lü Bahçe Seti",
+            "fiyat": "4950 TL",
+            "aciklama": "Dal Budama Makası, Dal Budama Testeresi, Çim Biçme Makinesi ve 2mt Uzatma Kolu 58VF."
+        },
+        {
+            "id": "PH306",
+            "isim": "Prohummer PH306 Profesyonel 216 Parça Usta Lokma Takımı",
+            "fiyat": "5750 TL",
+            "aciklama": "Paslanmaz çelik krom kaplama tam teşekküllü tamirci lokma takımı seti."
+        },
+        {
+            "id": "PH295",
+            "isim": "Prohummer PH295 50 mm Akülü Ağaç Budama Makinesi",
+            "fiyat": "7104 TL",
+            "aciklama": "Profesyonel kullanıma uygun, 50 mm kapasiteli akülü budama makası."
+        },
+        {
+            "id": "PH314",
+            "isim": "Prohummer PH314 Elektrikli 5 Ton Hidrolik Kriko",
+            "fiyat": "3590 TL",
+            "aciklama": "Hava pompası ve bijon anahtarı entegreli elektrikli araç krikosu."
+        },
+        {
+            "id": "PH014",
+            "isim": "Prohummer PH014 88VF 5ah Kömürsüz Şarjlı Kırıcı Delici Hilti",
+            "fiyat": "3990 TL",
+            "aciklama": "Mavi seri, kömürsüz motor teknolojili profesyonel kırıcı delici."
+        },
+        {
+            "id": "PH297",
+            "isim": "Prohummer PH297 Kömürsüz Motor Metal Mandren Matkap",
+            "fiyat": "3399 TL",
+            "aciklama": "36VF 5AH metal mandren vidalama matkap seti (10 Parça)."
+        }
+    ],
+    "kullanicilar": [
+        {
+            "id": "admin",
+            "sifre": "1234",
+            "isim": "Sistem Yöneticisi",
+            "rol": "Süper Admin",
+            "dept": "Yönetim",
+            "tarih": "01.01.2025"
+        },
+        {
+            "id": "mahir",
+            "sifre": "1234",
+            "isim": "Mahir Eken",
+            "rol": "Sipariş Personeli",
+            "dept": "Satış",
+            "tarih": "15.03.2025"
+        },
+        {
+            "id": "muhasebe1",
+            "sifre": "1234",
+            "isim": "ahmet dursun",
+            "rol": "Muhasebe",
+            "dept": "muhasebe",
+            "tarih": "27.04.2026"
+        }
+    ],
+    "siparisler": [],
+    "sikayetler": [],
+    "aktivite": [
+        {
+            "metin": "Mahir Eken sisteme giriş yaptı",
+            "renk": "var(--blue)",
+            "saat": "15:50"
+        },
+        {
+            "metin": "ahmet dursun sisteme giriş yaptı",
+            "renk": "var(--blue)",
+            "saat": "15:49"
+        },
+        {
+            "metin": "Yeni kullanıcı: ahmet dursun (Muhasebe)",
+            "renk": "var(--purple)",
+            "saat": "15:49"
+        },
+        {
+            "metin": "Sistem Yöneticisi sisteme giriş yaptı",
+            "renk": "var(--blue)",
+            "saat": "15:48"
+        }
+    ],
+    "ayarlar": {
+        "sirket": "Prohummer Türkiye",
+        "konum": "https://maps.app.goo.gl/VfAK9HTowqfTcmSV9",
+        "karsilama": "Merhaba! Prohummer WhatsApp Destek Hattına hoş geldiniz. Hırdavat, bahçe veya el aletleri... Ne tür bir güce ihtiyacınız var, hemen yardımcı olayım.",
+        "apiKey": "",
+        "wpPhoneId": "",
+        "wpBizId": "",
+        "wpToken": "",
+        "model": "gpt-4o-mini",
+        "prompt": ""
+    }
+}

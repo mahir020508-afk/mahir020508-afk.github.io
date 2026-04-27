@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProHummer CRM & ERP</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --orange: #F97316;
+            --orange-dark: #EA580C;
+            --orange-light: #FED7AA;
+            --bg: #0F1117;
+            --sidebar: #161B27;
+            --card: #1C2333;
+            --card2: #212840;
+            --border: #2A3350;
+            --text: #E2E8F0;
+            --muted: #64748B;
+            --green: #22C55E;
+            --red: #EF4444;
+            --yellow: #EAB308;
+            --blue: #3B82F6;
+            --purple: #A855F7;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Sora', sans-serif; background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; }
+        ::selection { background: var(--orange); color: white; }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+
+        /* LOGIN */
+        #login-screen {
+            position: fixed; inset: 0; z-index: 100;
+            background: radial-gradient(ellipse at 60% 40%, #1a1024 0%, #0F1117 70%);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .login-box {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 20px; padding: 40px; width: 400px;
+            box-shadow: 0 0 80px rgba(249,115,22,0.07);
+            animation: slideUp .4s ease;
+        }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+        .login-logo { width: 56px; height: 56px; background: var(--orange); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 22px; margin: 0 auto 16px; box-shadow: 0 0 30px rgba(249,115,22,0.4); }
+        .login-box h1 { text-align: center; font-size: 22px; font-weight: 700; color: white; }
+        .login-box p { text-align: center; font-size: 13px; color: var(--muted); margin-top: 4px; margin-bottom: 28px; }
+        .input-wrap { position: relative; margin-bottom: 14px; }
+        .input-wrap i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 14px; }
+        .input-wrap input { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 11px 14px 11px 38px; color: var(--text); font-family: 'Sora', sans-serif; font-size: 14px; outline: none; transition: border .2s; }
+        .input-wrap input:focus { border-color: var(--orange); }
+        .input-wrap label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; font-weight: 500; }
+        .btn-login { width: 100%; background: var(--orange); color: white; border: none; border-radius: 10px; padding: 12px; font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: background .2s, transform .1s; margin-top: 6px; }
+        .btn-login:hover { background: var(--orange-dark); }
+        .btn-login:active { transform: scale(.98); }
+        #login-error { text-align: center; color: var(--red); font-size: 13px; margin-top: 10px; display: none; }
+
+        /* APP LAYOUT */
+        #app-screen { display: none; height: 100vh; }
+        #app-screen.active { display: flex; }
+        aside { width: 240px; background: var(--sidebar); border-right: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; }
+        .sidebar-header { padding: 20px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+        .sidebar-logo { width: 38px; height: 38px; background: var(--orange); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 16px; flex-shrink: 0; }
+        .sidebar-title { font-weight: 700; font-size: 16px; color: white; line-height: 1; }
+        .sidebar-sub { font-size: 10px; color: var(--muted); letter-spacing: .1em; font-weight: 500; margin-top: 2px; }
+        .user-card { padding: 14px 18px; border-bottom: 1px solid var(--border); background: rgba(249,115,22,.05); }
+        .user-card .uname { font-size: 13px; font-weight: 600; color: var(--orange); }
+        .user-card .urole { font-size: 11px; color: var(--muted); margin-top: 2px; }
+        nav { flex: 1; padding: 12px 10px; overflow-y: auto; display: flex; flex-direction: column; gap: 2px; }
+        nav a { display: flex; align-items: center; gap: 11px; padding: 10px 14px; border-radius: 10px; color: var(--muted); font-size: 13.5px; font-weight: 500; text-decoration: none; transition: all .15s; }
+        nav a:hover { background: var(--card); color: var(--text); }
+        nav a.active { background: rgba(249,115,22,.15); color: var(--orange); }
+        nav a i { width: 18px; text-align: center; font-size: 14px; }
+        .nav-section { font-size: 10px; color: var(--muted); letter-spacing: .12em; font-weight: 600; padding: 10px 14px 4px; margin-top: 6px; }
+        .sidebar-footer { padding: 14px 10px; border-top: 1px solid var(--border); }
+        .btn-exit { display: flex; align-items: center; gap: 11px; padding: 10px 14px; border-radius: 10px; color: var(--muted); font-size: 13.5px; font-weight: 500; cursor: pointer; transition: all .15s; width: 100%; background: none; border: none; font-family: 'Sora', sans-serif; }
+        .btn-exit:hover { color: var(--red); background: rgba(239,68,68,.08); }
+
+        main { flex: 1; overflow-y: auto; padding: 28px 32px; }
+        .sayfa { display: none; animation: fadeIn .25s ease; }
+        .sayfa.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .page-header { margin-bottom: 24px; }
+        .page-header h2 { font-size: 24px; font-weight: 700; color: white; }
+        .page-header p { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+        /* CARDS */
+        .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+        .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px; display: flex; align-items: center; gap: 16px; transition: transform .2s, box-shadow .2s; }
+        .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,.3); }
+        .stat-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+        .stat-label { font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+        .stat-val { font-size: 28px; font-weight: 700; color: white; line-height: 1.1; margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
+
+        /* TABLES */
+        .table-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+        .table-toolbar { padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
+        .table-title { font-size: 15px; font-weight: 600; color: white; }
+        table { width: 100%; border-collapse: collapse; }
+        thead tr { background: rgba(42,51,80,.4); }
+        th { padding: 12px 20px; text-align: left; font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+        td { padding: 14px 20px; font-size: 13.5px; color: var(--text); border-bottom: 1px solid var(--border); }
+        tbody tr:last-child td { border-bottom: none; }
+        tbody tr:hover { background: rgba(255,255,255,.02); }
+
+        /* BADGES */
+        .badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; }
+        .badge-orange { background: rgba(249,115,22,.15); color: var(--orange); border: 1px solid rgba(249,115,22,.2); }
+        .badge-green { background: rgba(34,197,94,.12); color: var(--green); border: 1px solid rgba(34,197,94,.2); }
+        .badge-red { background: rgba(239,68,68,.12); color: var(--red); border: 1px solid rgba(239,68,68,.2); }
+        .badge-blue { background: rgba(59,130,246,.12); color: var(--blue); border: 1px solid rgba(59,130,246,.2); }
+        .badge-yellow { background: rgba(234,179,8,.12); color: var(--yellow); border: 1px solid rgba(234,179,8,.2); }
+        .badge-purple { background: rgba(168,85,247,.12); color: var(--purple); border: 1px solid rgba(168,85,247,.2); }
+        .badge-muted { background: rgba(100,116,139,.12); color: var(--muted); border: 1px solid rgba(100,116,139,.2); }
+
+        /* BUTTONS */
+        .btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 16px; border-radius: 9px; font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: all .15s; }
+        .btn-primary { background: var(--orange); color: white; }
+        .btn-primary:hover { background: var(--orange-dark); }
+        .btn-secondary { background: var(--card2); color: var(--text); border: 1px solid var(--border); }
+        .btn-secondary:hover { background: var(--border); }
+        .btn-success { background: rgba(34,197,94,.15); color: var(--green); border: 1px solid rgba(34,197,94,.25); }
+        .btn-success:hover { background: rgba(34,197,94,.25); }
+        .btn-danger { background: rgba(239,68,68,.12); color: var(--red); border: 1px solid rgba(239,68,68,.2); }
+        .btn-danger:hover { background: rgba(239,68,68,.22); }
+        .btn-icon { padding: 7px 10px; }
+
+        /* SEARCH */
+        .search-bar { position: relative; }
+        .search-bar i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 13px; }
+        .search-bar input { background: var(--bg); border: 1px solid var(--border); border-radius: 9px; padding: 9px 14px 9px 34px; color: var(--text); font-family: 'Sora', sans-serif; font-size: 13px; outline: none; width: 230px; transition: border .2s; }
+        .search-bar input:focus { border-color: var(--orange); }
+
+        /* MODAL */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.65); z-index: 200; display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+        .modal-overlay.open { display: flex; }
+        .modal { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 28px; width: 480px; max-height: 85vh; overflow-y: auto; animation: slideUp .25s ease; }
+        .modal-lg { width: 620px; }
+        .modal h3 { font-size: 17px; font-weight: 700; color: white; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .form-row { margin-bottom: 14px; }
+        .form-row label { display: block; font-size: 12px; color: var(--muted); font-weight: 600; margin-bottom: 6px; }
+        .form-row input, .form-row select, .form-row textarea { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 9px; padding: 10px 13px; color: var(--text); font-family: 'Sora', sans-serif; font-size: 13.5px; outline: none; transition: border .2s; }
+        .form-row input:focus, .form-row select:focus, .form-row textarea:focus { border-color: var(--orange); }
+        .form-row select option { background: var(--card); }
+        .form-row textarea { resize: vertical; min-height: 80px; }
+        .modal-footer { display: flex; gap: 10px; justify-content: flex-end; margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--border); }
+
+        /* PRODUCT GRID */
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+        .product-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 18px; transition: transform .2s, border-color .2s; }
+        .product-card:hover { transform: translateY(-3px); border-color: rgba(249,115,22,.3); }
+        .product-id { font-size: 11px; font-family: 'JetBrains Mono', monospace; color: var(--muted); margin-bottom: 8px; }
+        .product-name { font-size: 14px; font-weight: 600; color: white; margin-bottom: 6px; line-height: 1.4; }
+        .product-desc { font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 12px; }
+        .product-footer { display: flex; align-items: center; justify-content: space-between; }
+        .product-price { font-size: 16px; font-weight: 700; color: var(--orange); font-family: 'JetBrains Mono', monospace; }
+        .product-actions { display: flex; gap: 6px; }
+
+        /* ACTIVITY LOG */
+        .activity-item { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+        .activity-item:last-child { border-bottom: none; }
+        .activity-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+        .activity-time { font-size: 11px; color: var(--muted); font-family: 'JetBrains Mono', monospace; white-space: nowrap; margin-top: 2px; }
+        .activity-text { font-size: 13px; color: var(--text); line-height: 1.5; }
+
+        /* TOAST */
+        #toast-area { position: fixed; top: 20px; right: 20px; z-index: 999; display: flex; flex-direction: column; gap: 10px; }
+        .toast { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 12px 18px; display: flex; align-items: center; gap: 12px; font-size: 13.5px; font-weight: 500; box-shadow: 0 8px 30px rgba(0,0,0,.4); animation: slideIn .3s ease; min-width: 260px; }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: none; } }
+        .toast.success { border-left: 3px solid var(--green); }
+        .toast.error { border-left: 3px solid var(--red); }
+        .toast.info { border-left: 3px solid var(--blue); }
+        .toast.warning { border-left: 3px solid var(--yellow); }
+
+        /* CONFIRM DIALOG */
+        #confirm-dialog { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.7); z-index: 500; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+        #confirm-dialog.open { display: flex; }
+        .confirm-box { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 28px; width: 360px; animation: slideUp .2s ease; }
+        .confirm-box h4 { font-size: 16px; font-weight: 700; color: white; margin-bottom: 8px; }
+        .confirm-box p { font-size: 13.5px; color: var(--muted); margin-bottom: 22px; }
+        .confirm-actions { display: flex; gap: 10px; }
+
+        /* MISC */
+        .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
+        .empty-state i { font-size: 48px; margin-bottom: 16px; opacity: .4; }
+        .empty-state h4 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+        .siparis-detail-row { display: flex; gap: 8px; margin-bottom: 8px; font-size: 13px; }
+        .siparis-detail-row strong { color: var(--muted); font-size: 11px; min-width: 80px; }
+        .user-avatar { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0; }
+        .quick-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+        .mini-stat { background: var(--bg); border-radius: 10px; padding: 12px 16px; border: 1px solid var(--border); }
+        .mini-stat .val { font-size: 22px; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: white; }
+        .mini-stat .lbl { font-size: 11px; color: var(--muted); margin-top: 2px; }
+        .filter-bar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        select.filter-select { background: var(--bg); border: 1px solid var(--border); border-radius: 9px; padding: 9px 13px; color: var(--text); font-family: 'Sora', sans-serif; font-size: 13px; outline: none; }
+        select.filter-select:focus { border-color: var(--orange); }
+        .whatsapp-sim { background: #0d1117; border-radius: 14px; border: 1px solid var(--border); overflow: hidden; }
+        .chat-header { background: #1a2233; padding: 14px 18px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); }
+        .chat-messages { padding: 18px; height: 340px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+        .chat-bubble { padding: 10px 14px; border-radius: 12px; font-size: 13.5px; max-width: 75%; line-height: 1.5; }
+        .bubble-in { background: var(--card); align-self: flex-start; border-bottom-left-radius: 4px; }
+        .bubble-out { background: rgba(249,115,22,.25); align-self: flex-end; border-bottom-right-radius: 4px; }
+        .bubble-sys { background: rgba(59,130,246,.12); border: 1px solid rgba(59,130,246,.2); align-self: flex-start; font-size: 12px; color: var(--blue); font-family: 'JetBrains Mono', monospace; }
+        .chat-input-bar { padding: 14px 18px; border-top: 1px solid var(--border); display: flex; gap: 10px; }
+        .chat-input-bar input { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 9px; padding: 10px 14px; color: var(--text); font-family: 'Sora', sans-serif; font-size: 13.5px; outline: none; }
+        .chat-input-bar input:focus { border-color: var(--orange); }
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .col-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px; }
+        .col-card-title { font-size: 13px; font-weight: 600; color: white; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+        .progress-bar { height: 6px; background: var(--border); border-radius: 99px; overflow: hidden; margin-top: 6px; }
+        .progress-fill { height: 100%; border-radius: 99px; }
+        .tabs { display: flex; gap: 4px; background: var(--bg); border-radius: 10px; padding: 4px; margin-bottom: 20px; border: 1px solid var(--border); }
+        .tab { padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; color: var(--muted); transition: all .15s; }
+        .tab.active { background: var(--orange); color: white; }
+        .no-results { display: none; }
+        #wp-typing { display: none; padding: 4px 12px; }
+        #wp-typing span { font-size: 12px; color: var(--muted); font-style: italic; }
+    </style>
+</head>
+<body>
+
+<div id="toast-area"></div>
+<div id="confirm-dialog">
+    <div class="confirm-box">
+        <h4 id="confirm-title">Emin misiniz?</h4>
+        <p id="confirm-text">Bu işlemi geri alamazsınız.</p>
+        <div class="confirm-actions">
+            <button class="btn btn-danger" id="confirm-yes" style="flex:1">Evet, Sil</button>
+            <button class="btn btn-secondary" style="flex:1" onclick="closeConfirm()">Vazgeç</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modal-siparis">
+    <div class="modal modal-lg">
+        <h3><i class="fas fa-plus-circle" style="color:var(--orange)"></i> Yeni Sipariş Ekle</h3>
+        <div class="form-row"><label>Müşteri Adı Soyadı *</label><input id="sip-isim" placeholder="Ad Soyad" /></div>
+        <div class="form-row"><label>Telefon Numarası *</label><input id="sip-tel" placeholder="05xx xxx xx xx" /></div>
+        <div class="form-row"><label>Tam Adres *</label><textarea id="sip-adres" placeholder="İl, ilçe, mahalle, cadde..."></textarea></div>
+        <div class="form-row"><label>Ürün *</label><select id="sip-urun"></select></div>
+        <div class="form-row"><label>Adet</label><input id="sip-adet" type="number" value="1" min="1" /></div>
+        <div class="form-row"><label>Not (Opsiyonel)</label><textarea id="sip-not" placeholder="Ek notlar..."></textarea></div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeModal('modal-siparis')">İptal</button>
+            <button class="btn btn-primary" onclick="siparisEkle()"><i class="fas fa-check"></i> Siparişi Kaydet</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modal-siparis-detay">
+    <div class="modal modal-lg">
+        <h3><i class="fas fa-receipt" style="color:var(--orange)"></i> Sipariş Detayı</h3>
+        <div id="siparis-detay-icerik"></div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeModal('modal-siparis-detay')">Kapat</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modal-sikayet">
+    <div class="modal">
+        <h3><i class="fas fa-headset" style="color:var(--yellow)"></i> Yeni Şikayet/Destek</h3>
+        <div class="form-row"><label>Müşteri Adı</label><input id="sik-isim" placeholder="Ad Soyad" /></div>
+        <div class="form-row"><label>Telefon</label><input id="sik-tel" placeholder="05xx xxx xx xx" /></div>
+        <div class="form-row"><label>Konu</label>
+            <select id="sik-konu">
+                <option>Ürün Arızası</option>
+                <option>Yanlış Ürün Gönderildi</option>
+                <option>Kargo Hasarı</option>
+                <option>İptal/İade Talebi</option>
+                <option>Genel Şikayet</option>
+                <option>Teknik Destek</option>
+            </select>
+        </div>
+        <div class="form-row"><label>Açıklama</label><textarea id="sik-aciklama" placeholder="Şikayet detayları..."></textarea></div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeModal('modal-sikayet')">İptal</button>
+            <button class="btn btn-primary" onclick="sikayetEkle()"><i class="fas fa-check"></i> Kaydet</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modal-urun">
+    <div class="modal modal-lg">
+        <h3><i class="fas fa-box" style="color:var(--green)"></i> <span id="urun-modal-title">Yeni Ürün Ekle</span></h3>
+        <input type="hidden" id="urun-edit-id" value="" />
+        <div class="form-row"><label>Ürün Kodu *</label><input id="urun-id" placeholder="PH001" /></div>
+        <div class="form-row"><label>Ürün Adı *</label><input id="urun-isim" placeholder="Ürün tam adı" /></div>
+        <div class="form-row"><label>Fiyat *</label><input id="urun-fiyat" placeholder="1990 TL" /></div>
+        <div class="form-row"><label>Açıklama *</label><textarea id="urun-aciklama" placeholder="Ürün teknik açıklaması..."></textarea></div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeModal('modal-urun')">İptal</button>
+            <button class="btn btn-primary" onclick="urunKaydet()"><i class="fas fa-check"></i> Kaydet</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modal-kullanici">
+    <div class="modal">
+        <h3><i class="fas fa-user-plus" style="color:var(--purple)"></i> Yeni Kullanıcı Ekle</h3>
+        <div class="form-row"><label>Ad Soyad *</label><input id="kul-isim" placeholder="Ad Soyad" /></div>
+        <div class="form-row"><label>Giriş Adı (username) *</label><input id="kul-username" placeholder="kullanici123" /></div>
+        <div class="form-row"><label>Şifre *</label><input id="kul-sifre" type="password" placeholder="••••••" /></div>
+        <div class="form-row"><label>Departman</label><input id="kul-dept" placeholder="Satış, Destek, Depo..." /></div>
+        <div class="form-row"><label>Rol</label>
+            <select id="kul-rol">
+                <option>Sipariş Personeli</option>
+                <option>Destek Personeli</option>
+                <option>Depo Personeli</option>
+                <option>Muhasebe</option>
+                <option>Müdür</option>
+            </select>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeModal('modal-kullanici')">İptal</button>
+            <button class="btn btn-primary" onclick="kullaniciEkle()"><i class="fas fa-check"></i> Kullanıcı Oluştur</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modal-api">
+    <div class="modal modal-lg">
+        <h3><i class="fas fa-robot" style="color:var(--blue)"></i> Bot & API Ayarları</h3>
+        <div class="form-row"><label>OpenAI API Anahtarı</label><input id="api-key" placeholder="sk-..." type="password" /></div>
+        <div class="form-row"><label>WhatsApp Telefon Numarası ID</label><input id="wp-phone-id" placeholder="WhatsApp Business API'den alınan Phone ID" /></div>
+        <div class="form-row"><label>WhatsApp Business Account ID</label><input id="wp-biz-id" placeholder="Business Account ID" /></div>
+        <div class="form-row"><label>WhatsApp Access Token</label><input id="wp-token" placeholder="Meta API Access Token" type="password" /></div>
+        <div class="form-row"><label>AI Modeli</label>
+            <select id="api-model">
+                <option value="gpt-4o-mini">GPT-4o Mini (Hızlı & Ekonomik)</option>
+                <option value="gpt-4o">GPT-4o (Güçlü)</option>
+                <option value="gpt-4-turbo">GPT-4 Turbo</option>
+            </select>
+        </div>
+        <div class="form-row"><label>Hoşgeldin Mesajı (Bot yanıtı)</label>
+            <textarea id="api-hosgeldin" rows="3">Merhaba! Prohummer WhatsApp Destek Hattına hoş geldiniz. Hırdavat, bahçe veya el aletleri... Ne tür bir güce ihtiyacınız var, hemen yardımcı olayım.</textarea>
+        </div>
+        <div class="form-row"><label>Sistem Promptu (Bot karakteri)</label>
+            <textarea id="api-prompt" rows="5" style="font-family:'JetBrains Mono',monospace;font-size:12px;">Sen Prohummer şirketinin WhatsApp asistanısın. Müşteri ürün sorarsa kibarca yardımcı ol. Sipariş vermek isterse ad, soyad, telefon numarası ve tam adresini iste. Siparişi aldığında en sona [SIPARIS: Ad Soyad | Telefon | Adres | Ürün] formatında gizli kod ekle.</textarea>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeModal('modal-api')">İptal</button>
+            <button class="btn btn-success" onclick="apiAyarlariKaydet()"><i class="fas fa-save"></i> Ayarları Kaydet</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modal-wp-sim">
+    <div class="modal modal-lg">
+        <h3><i class="fab fa-whatsapp" style="color:var(--green)"></i> WhatsApp Bot Simülatörü</h3>
+        <p style="font-size:12px;color:var(--muted);margin:-12px 0 16px">API anahtarınızı ayarlarda girerek botu test edin. Gerçek siparişler panele düşer.</p>
+        <div class="whatsapp-sim">
+            <div class="chat-header">
+                <div style="width:36px;height:36px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px"><i class="fab fa-whatsapp" style="color:white"></i></div>
+                <div>
+                    <div style="font-size:13px;font-weight:600;color:white">Prohummer Bot</div>
+                    <div style="font-size:11px;color:#25D366">● Aktif</div>
+                </div>
+            </div>
+            <div class="chat-messages" id="wp-chat-messages">
+                <div class="chat-bubble bubble-in">Merhaba! Prohummer WhatsApp Destek Hattına hoş geldiniz. 🔧<br>Ne tür bir güce ihtiyacınız var?</div>
+            </div>
+            <div id="wp-typing"><span>Bot yazıyor...</span></div>
+            <div class="chat-input-bar">
+                <input id="wp-user-input" placeholder="Mesaj yaz..." onkeydown="if(event.key==='Enter')wpGonder()" />
+                <button class="btn btn-primary btn-icon" onclick="wpGonder()"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="chatTemizle()"><i class="fas fa-trash"></i> Sohbeti Temizle</button>
+            <button class="btn btn-secondary" onclick="closeModal('modal-wp-sim')">Kapat</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modal-sikayet-detay">
+    <div class="modal">
+        <h3><i class="fas fa-headset" style="color:var(--yellow)"></i> Şikayet Detayı</h3>
+        <div id="sikayet-detay-icerik"></div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeModal('modal-sikayet-detay')">Kapat</button>
+        </div>
+    </div>
+</div>
+
+<div id="login-screen">
+    <div class="login-box">
+        <div class="login-logo">P</div>
+        <h1>ProHummer</h1>
+        <p>Yönetim Paneli Girişi</p>
+        <div class="input-wrap">
+            <label>Kullanıcı Adı</label>
+            <i class="fas fa-user"></i>
+            <input type="text" id="login-username" placeholder="admin veya mahir" />
+        </div>
+        <div class="input-wrap">
+            <label>Şifre</label>
+            <i class="fas fa-lock"></i>
+            <input type="password" id="login-password" placeholder="••••••" onkeydown="if(event.key==='Enter')girisYap()" />
+        </div>
+        <button class="btn-login" onclick="girisYap()"><i class="fas fa-sign-in-alt"></i> Giriş Yap</button>
+        <p id="login-error">Hatalı kullanıcı adı veya şifre!</p>
+    </div>
+</div>
+
+<div id="app-screen">
+    <aside>
+        <div class="sidebar-header">
+            <div class="sidebar-logo">P</div>
+            <div>
+                <div class="sidebar-title">ProHummer</div>
+                <div class="sidebar-sub">YÖNETİM PANELİ</div>
+            </div>
+        </div>
+        <div class="user-card">
+            <div class="uname" id="active-user-name">—</div>
+            <div class="urole" id="active-user-role">—</div>
+        </div>
+        <nav id="sidebar-nav">
+            <div class="nav-section">ANA</div>
+            <a href="#" onclick="sayfaGoster('dashboard')" data-page="dashboard"><i class="fas fa-chart-pie"></i> Özet Ekranı</a>
+            <a href="#" onclick="sayfaGoster('siparisler')" data-page="siparisler"><i class="fas fa-box" style="color:var(--orange)"></i> Sipariş Yönetimi</a>
+            <a href="#" onclick="sayfaGoster('urunler')" data-page="urunler"><i class="fas fa-tags" style="color:var(--green)"></i> Ürünlerimiz</a>
+            <a href="#" onclick="sayfaGoster('sikayetler')" data-page="sikayetler"><i class="fas fa-headset" style="color:var(--yellow)"></i> Şikayet & Destek</a>
+            <div class="nav-section">BOT</div>
+            <a href="#" onclick="sayfaGoster('bot')" data-page="bot"><i class="fab fa-whatsapp" style="color:#25D366"></i> WhatsApp Bot</a>
+            <div class="nav-section" id="admin-section">YÖNETİM</div>
+            <a href="#" onclick="sayfaGoster('kullanicilar')" data-page="kullanicilar" id="menu-kullanicilar"><i class="fas fa-users-cog" style="color:var(--purple)"></i> Sistem Kullanıcıları</a>
+            <a href="#" onclick="sayfaGoster('ayarlar')" data-page="ayarlar" id="menu-ayarlar"><i class="fas fa-cog" style="color:var(--blue)"></i> Sistem Ayarları</a>
+        </nav>
+        <div class="sidebar-footer">
+            <button class="btn-exit" onclick="cikisYap()"><i class="fas fa-sign-out-alt"></i> Güvenli Çıkış</button>
+        </div>
+    </aside>
+
+    <main>
+
+        <div id="dashboard" class="sayfa">
+            <div class="page-header">
+                <h2>Özet Ekranı</h2>
+                <p id="dashboard-tarih">Bugünün özeti</p>
+            </div>
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:rgba(249,115,22,.12)"><i class="fas fa-box-open" style="color:var(--orange)"></i></div>
+                    <div><div class="stat-label">Bekleyen Sipariş</div><div class="stat-val" id="stat-bekleyen">0</div></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:rgba(34,197,94,.12)"><i class="fas fa-check-circle" style="color:var(--green)"></i></div>
+                    <div><div class="stat-label">Tamamlanan</div><div class="stat-val" id="stat-tamamlanan">0</div></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:rgba(59,130,246,.12)"><i class="fas fa-tags" style="color:var(--blue)"></i></div>
+                    <div><div class="stat-label">Aktif Ürün</div><div class="stat-val" id="stat-urun">0</div></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:rgba(234,179,8,.12)"><i class="fas fa-exclamation-circle" style="color:var(--yellow)"></i></div>
+                    <div><div class="stat-label">Açık Şikayet</div><div class="stat-val" id="stat-sikayet">0</div></div>
+                </div>
+            </div>
+            <div class="two-col">
+                <div class="col-card">
+                    <div class="col-card-title"><i class="fas fa-clock" style="color:var(--orange)"></i> Son Siparişler</div>
+                    <div id="dashboard-son-siparisler" style="display:flex;flex-direction:column;gap:10px"></div>
+                </div>
+                <div class="col-card">
+                    <div class="col-card-title"><i class="fas fa-bell" style="color:var(--yellow)"></i> Son Aktiviteler</div>
+                    <div id="activity-log" style="max-height:300px;overflow-y:auto"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="siparisler" class="sayfa">
+            <div class="page-header" style="display:flex;align-items:center;justify-content:space-between">
+                <div><h2>Sipariş Yönetimi</h2><p>Tüm siparişleri buradan yönetin</p></div>
+                <button class="btn btn-primary" onclick="openModal('modal-siparis')"><i class="fas fa-plus"></i> Yeni Sipariş</button>
+            </div>
+            <div class="filter-bar" style="margin-bottom:16px">
+                <div class="search-bar"><i class="fas fa-search"></i><input id="sip-search" placeholder="İsim veya telefon ara..." oninput="siparisleriFiltrele()" /></div>
+                <select class="filter-select" id="sip-filter-durum" onchange="siparisleriFiltrele()">
+                    <option value="">Tüm Durumlar</option>
+                    <option>Yeni Bekliyor</option>
+                    <option>İşleniyor</option>
+                    <option>Kargoya Verildi</option>
+                    <option>Tamamlandı</option>
+                    <option>İptal Edildi</option>
+                </select>
+            </div>
+            <div class="table-card">
+                <table>
+                    <thead><tr>
+                        <th>#</th><th>Müşteri</th><th>Telefon</th><th>Ürün</th><th>Tarih</th><th>Durum</th><th>İşlemler</th>
+                    </tr></thead>
+                    <tbody id="siparis-tbody"></tbody>
+                </table>
+                <div class="no-results" id="siparis-no-results" style="display:none">
+                    <div class="empty-state"><i class="fas fa-search"></i><h4>Sonuç bulunamadı</h4><p>Filtrenizi değiştirmeyi deneyin</p></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="urunler" class="sayfa">
+            <div class="page-header" style="display:flex;align-items:center;justify-content:space-between">
+                <div><h2>Ürünlerimiz</h2><p>Tüm ürünleri yönetin</p></div>
+                <div style="display:flex;gap:10px">
+                    <div class="search-bar"><i class="fas fa-search"></i><input id="urun-search" placeholder="Ürün ara..." oninput="urunleriFiltrele()" /></div>
+                    <button class="btn btn-primary" onclick="urunModalAc()"><i class="fas fa-plus"></i> Yeni Ürün</button>
+                </div>
+            </div>
+            <div id="urun-grid" class="product-grid"></div>
+            <div class="empty-state" id="urun-no-results" style="display:none">
+                <i class="fas fa-box-open"></i><h4>Ürün bulunamadı</h4>
+            </div>
+        </div>
+
+        <div id="sikayetler" class="sayfa">
+            <div class="page-header" style="display:flex;align-items:center;justify-content:space-between">
+                <div><h2>Şikayet & Destek</h2><p>Müşteri geri bildirimlerini yönetin</p></div>
+                <button class="btn btn-primary" onclick="openModal('modal-sikayet')"><i class="fas fa-plus"></i> Yeni Kayıt</button>
+            </div>
+            <div class="table-card">
+                <table>
+                    <thead><tr><th>#</th><th>Müşteri</th><th>Konu</th><th>Tarih</th><th>Durum</th><th>İşlemler</th></tr></thead>
+                    <tbody id="sikayet-tbody"></tbody>
+                </table>
+                <div class="empty-state" id="sikayet-empty" style="display:none">
+                    <i class="fas fa-check-circle" style="color:var(--green)"></i>
+                    <h4>Açık şikayet yok</h4>
+                    <p>Harika iş çıkarıyorsunuz!</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="bot" class="sayfa">
+            <div class="page-header"><h2>WhatsApp Bot</h2><p>Bot simülatörü ve yönetim</p></div>
+            <div class="stat-grid" style="grid-template-columns:repeat(3,1fr)">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:rgba(37,211,102,.12)"><i class="fab fa-whatsapp" style="color:#25D366"></i></div>
+                    <div><div class="stat-label">Bot Durumu</div><div style="font-size:15px;font-weight:600;color:var(--green);margin-top:4px" id="bot-durum-text">Yapılandırılmamış</div></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:rgba(59,130,246,.12)"><i class="fas fa-robot" style="color:var(--blue)"></i></div>
+                    <div><div class="stat-label">AI Modeli</div><div style="font-size:13px;font-weight:600;color:white;margin-top:4px" id="bot-model-text">—</div></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:rgba(249,115,22,.12)"><i class="fas fa-comment-dots" style="color:var(--orange)"></i></div>
+                    <div><div class="stat-label">Toplam Mesaj (Sim.)</div><div class="stat-val" id="bot-mesaj-sayisi">0</div></div>
+                </div>
+            </div>
+            <div class="two-col">
+                <div>
+                    <div class="col-card" style="margin-bottom:16px">
+                        <div class="col-card-title"><i class="fab fa-whatsapp" style="color:#25D366"></i> Bot Simülatörü</div>
+                        <p style="font-size:12px;color:var(--muted);margin-bottom:12px">API anahtarınızı ayarlara girdikten sonra botu buradan test edebilirsiniz.</p>
+                        <button class="btn btn-success" onclick="openModal('modal-wp-sim')" style="width:100%"><i class="fab fa-whatsapp"></i> Simülatörü Aç</button>
+                    </div>
+                    <div class="col-card">
+                        <div class="col-card-title"><i class="fas fa-cog" style="color:var(--blue)"></i> API Ayarları</div>
+                        <p style="font-size:12px;color:var(--muted);margin-bottom:12px">OpenAI ve WhatsApp Business API bağlantılarını yapılandırın.</p>
+                        <button class="btn btn-secondary" onclick="openModal('modal-api')" style="width:100%"><i class="fas fa-key"></i> Ayarları Düzenle</button>
+                    </div>
+                </div>
+                <div class="col-card">
+                    <div class="col-card-title"><i class="fas fa-code" style="color:var(--purple)"></i> beyin.py Konfigürasyonu</div>
+                    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">Bot altyapınız için Python dosyasında yapmanız gerekenler:</p>
+                    <div style="background:var(--bg);border-radius:10px;padding:14px;border:1px solid var(--border)">
+                        <pre style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text);line-height:1.7;white-space:pre-wrap">1. <span style="color:var(--orange)">client = OpenAI(api_key="sk-...")</span>
+   → API anahtarınızı girin
+
+2. <span style="color:var(--green)">model="gpt-4o-mini"</span>
+   → Seçtiğiniz modeli yazın
+
+3. <span style="color:var(--blue)">json_dosya_yolu</span>
+   → veri.json ile aynı klasörde olsun
+
+4. Sipariş formatı:
+   <span style="color:var(--yellow)">[SIPARIS: Ad | Tel | Adres | Ürün]</span>
+   → Bu format değiştirilmemeli
+
+5. WhatsApp bağlantısı için:
+   → Meta Business API entegrasyonu
+   → Phone Number ID ekleyin
+   → Webhook kurun</pre>
+                    </div>
+                    <button class="btn btn-secondary" style="margin-top:12px;width:100%" onclick="sistemPromptuGuncelle()"><i class="fas fa-sync"></i> Sistem Promptunu Güncelle</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="kullanicilar" class="sayfa">
+            <div class="page-header" style="display:flex;align-items:center;justify-content:space-between">
+                <div><h2>Sistem Kullanıcıları</h2><p>Panel erişim yönetimi</p></div>
+                <button class="btn btn-primary" onclick="openModal('modal-kullanici')"><i class="fas fa-user-plus"></i> Kullanıcı Ekle</button>
+            </div>
+            <div class="table-card">
+                <table>
+                    <thead><tr><th>Kullanıcı</th><th>Rol</th><th>Giriş Adı</th><th>Oluşturulma</th><th>İşlemler</th></tr></thead>
+                    <tbody id="kullanici-tbody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="ayarlar" class="sayfa">
+            <div class="page-header"><h2>Sistem Ayarları</h2><p>Şirket bilgileri ve genel yapılandırma</p></div>
+            <div class="two-col">
+                <div>
+                    <div class="col-card" style="margin-bottom:16px">
+                        <div class="col-card-title"><i class="fas fa-building" style="color:var(--orange)"></i> Şirket Bilgileri</div>
+                        <div class="form-row"><label>Şirket Adı</label><input id="sirket-isim" value="Prohummer Türkiye" /></div>
+                        <div class="form-row"><label>Konum Linki (Google Maps)</label><input id="sirket-konum" value="https://maps.app.goo.gl/VfAK9HTowqfTcmSV9" /></div>
+                        <div class="form-row"><label>WhatsApp Hattı Karşılama Mesajı</label>
+                            <textarea id="sirket-karsilama" rows="3">Merhaba! Prohummer WhatsApp Destek Hattına hoş geldiniz.</textarea>
+                        </div>
+                        <button class="btn btn-primary" onclick="sirketBilgileriKaydet()"><i class="fas fa-save"></i> Kaydet</button>
+                    </div>
+                    <div class="col-card">
+                        <div class="col-card-title"><i class="fas fa-database" style="color:var(--blue)"></i> Veri Yönetimi</div>
+                        <p style="font-size:12.5px;color:var(--muted);margin-bottom:16px">Panel verisini JSON olarak dışa aktarın veya sıfırlayın.</p>
+                        <div style="display:flex;gap:10px;flex-wrap:wrap">
+                            <button class="btn btn-secondary" onclick="veriExport()"><i class="fas fa-download"></i> JSON Dışa Aktar</button>
+                            <button class="btn btn-danger" onclick="veriSifirlaConfirm()"><i class="fas fa-trash"></i> Siparişleri Sıfırla</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-card">
+                    <div class="col-card-title"><i class="fas fa-info-circle" style="color:var(--purple)"></i> Panel Hakkında</div>
+                    <div style="font-size:13px;color:var(--muted);line-height:1.9">
+                        <p>📦 <strong style="color:var(--text)">ProHummer CRM & ERP</strong></p>
+                        <p>Sürüm: <span style="color:var(--orange);font-family:'JetBrains Mono',monospace">2.0.0</span></p>
+                        <p style="margin-top:12px;border-top:1px solid var(--border);padding-top:12px"><strong style="color:var(--text)">Yeni Eklenen Özellikler:</strong></p>
+                        <ul style="margin-top:8px;display:flex;flex-direction:column;gap:6px;padding-left:16px">
+                            <li>✅ FastAPI Backend Entegrasyonu eklendi</li>
+                            <li>✅ WhatsApp Bot Simülatörü (AI destekli)</li>
+                            <li>✅ Tüm 20 ürün katalogda aktif</li>
+                            <li>✅ Sipariş durum güncelleme & detay görüntüleme</li>
+                            <li>✅ Gerçek zamanlı API senkronizasyonu</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<script>
+const API_BASE = "http://localhost:8000/api";
+let DB = {};
+let isDBLoaded = false;
+let aktifKullanici = null;
+let botMesajSayisi = 0;
+let chatHistory = [];
+
+// ===================== API İLE SENKRONİZASYON =====================
+async function initDB() {
+    try {
+        const res = await fetch(`${API_BASE}/db`);
+        DB = await res.json();
+        
+        // Eksik alanları tamamla (İlk kurulumda JSON dosyasında eksikse)
+        if (!DB.kullanicilar) {
+            DB.kullanicilar = [
+                { id: "admin", sifre: "1234", isim: "Sistem Yöneticisi", rol: "Süper Admin", dept: "Yönetim", tarih: "01.01.2025" },
+                { id: "mahir", sifre: "1234", isim: "Mahir Eken", rol: "Sipariş Personeli", dept: "Satış", tarih: "15.03.2025" }
+            ];
+        }
+        if (!DB.siparisler) DB.siparisler = [];
+        if (!DB.sikayetler) DB.sikayetler = [];
+        if (!DB.aktivite) DB.aktivite = [];
+        if (!DB.ayarlar) DB.ayarlar = {
+            sirket: DB.sirket_bilgisi?.isim || "Prohummer Türkiye",
+            konum: DB.sirket_bilgisi?.konum || "",
+            karsilama: DB.sirket_bilgisi?.karsilama_mesaji || "Merhaba!",
+            apiKey: "", wpPhoneId: "", wpBizId: "", wpToken: "", model: "gpt-4o-mini", prompt: ""
+        };
+        if (!DB.urunler) DB.urunler = [];
+        isDBLoaded = true;
+    } catch(e) {
+        console.error("Veritabanı çekilemedi", e);
+        toast("Sunucuya bağlanılamadı! FastAPI çalışıyor mu?", "error");
+    }
+}
+
+async function saveDB() {
+    try {
+        await fetch(`${API_BASE}/db`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(DB)
+        });
+    } catch(e) {
+        console.error("Veri kaydedilemedi", e);
+    }
+}
+
+// ===================== GİRİŞ =====================
+async function girisYap() {
+    if (!isDBLoaded) { toast("Veritabanı yükleniyor, lütfen bekleyin...", "warning"); return; }
+    
+    const u = document.getElementById('login-username').value.trim().toLowerCase();
+    const p = document.getElementById('login-password').value;
+    const kul = DB.kullanicilar.find(k => k.id === u && k.sifre === p);
+    
+    if (kul) {
+        aktifKullanici = kul;
+        document.getElementById('active-user-name').innerText = kul.isim;
+        document.getElementById('active-user-role').innerText = kul.rol;
+        const adminSecton = document.getElementById('admin-section');
+        const menuKul = document.getElementById('menu-kullanicilar');
+        const menuAyar = document.getElementById('menu-ayarlar');
+        if (kul.id === 'admin') {
+            adminSecton.style.display = ''; menuKul.style.display = ''; menuAyar.style.display = '';
+        } else {
+            adminSecton.style.display = 'none'; menuKul.style.display = 'none'; menuAyar.style.display = 'none';
+        }
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('app-screen').classList.add('active');
+        sayfaGoster('dashboard');
+        aktiviteEkle(`${kul.isim} sisteme giriş yaptı`, 'blue');
+        toast(`Hoş geldin, ${kul.isim.split(' ')[0]}! 👋`, 'success');
+        
+        // Ayarları UI'a yükle
+        document.getElementById('api-key').value = DB.ayarlar.apiKey || "";
+        document.getElementById('api-model').value = DB.ayarlar.model || "gpt-4o-mini";
+        document.getElementById('api-prompt').value = DB.ayarlar.prompt || "";
+        document.getElementById('bot-durum-text').innerText = DB.ayarlar.apiKey ? '✓ Yapılandırıldı' : 'Yapılandırılmamış';
+        document.getElementById('bot-durum-text').style.color = DB.ayarlar.apiKey ? 'var(--green)' : 'var(--muted)';
+        document.getElementById('bot-model-text').innerText = DB.ayarlar.model || '—';
+    } else {
+        document.getElementById('login-error').style.display = 'block';
+        setTimeout(() => document.getElementById('login-error').style.display = 'none', 3000);
+    }
+}
+
+function cikisYap() {
+    aktifKullanici = null;
+    document.getElementById('app-screen').classList.remove('active');
+    document.getElementById('login-screen').style.display = '';
+    document.getElementById('login-username').value = '';
+    document.getElementById('login-password').value = '';
+}
+
+// ===================== SAYFA DEĞİŞTİR =====================
+function sayfaGoster(id) {
+    document.querySelectorAll('.sayfa').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('#sidebar-nav a').forEach(a => {
+        a.classList.toggle('active', a.getAttribute('data-page') === id);
+    });
+    const el = document.getElementById(id);
+    if (el) el.classList.add('active');
+    if (id === 'dashboard') dashboardGuncelle();
+    if (id === 'siparisler') siparisleriRender();
+    if (id === 'urunler') urunleriRender();
+    if (id === 'sikayetler') sikayetleriRender();
+    if (id === 'kullanicilar') kullanicilariRender();
+    return false;
+}
+
+// ===================== DASHBOARD =====================
+function dashboardGuncelle() {
+    const bekleyen = DB.siparisler.filter(s => s.durum === 'Yeni Bekliyor' || s.durum === 'İşleniyor').length;
+    const tamamlanan = DB.siparisler.filter(s => s.durum === 'Tamamlandı').length;
+    const acikSikayet = DB.sikayetler.filter(s => s.durum !== 'Çözüldü').length;
+    document.getElementById('stat-bekleyen').innerText = bekleyen;
+    document.getElementById('stat-tamamlanan').innerText = tamamlanan;
+    document.getElementById('stat-urun').innerText = DB.urunler.length;
+    document.getElementById('stat-sikayet').innerText = acikSikayet;
+    const now = new Date();
+    document.getElementById('dashboard-tarih').innerText = now.toLocaleDateString('tr-TR', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+    const sonSip = document.getElementById('dashboard-son-siparisler');
+    const son5 = [...DB.siparisler].reverse().slice(0, 5);
+    if (son5.length === 0) { sonSip.innerHTML = '<div style="color:var(--muted);font-size:13px;text-align:center;padding:20px">Henüz sipariş yok</div>'; return; }
+    sonSip.innerHTML = son5.map(s => `
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">
+            <div>
+                <div style="font-size:13px;font-weight:600;color:white">${s.isim}</div>
+                <div style="font-size:11px;color:var(--muted)">${s.urun} • ${s.tarih}</div>
+            </div>
+            ${durumBadge(s.durum)}
+        </div>`).join('');
+}
+
+// ===================== SİPARİŞLER =====================
+async function siparisEkle() {
+    const isim = document.getElementById('sip-isim').value.trim();
+    const tel = document.getElementById('sip-tel').value.trim();
+    const adres = document.getElementById('sip-adres').value.trim();
+    const urunId = document.getElementById('sip-urun').value;
+    const adet = document.getElementById('sip-adet').value || 1;
+    const not = document.getElementById('sip-not').value.trim();
+    if (!isim || !tel || !adres || !urunId) { toast('Zorunlu alanları doldurun!', 'error'); return; }
+    const urun = DB.urunler.find(u => u.id === urunId);
+    
+    const maxId = Math.max(...DB.siparisler.map(s => s.id || 0), 0);
+    const siparis = {
+        id: maxId + 1,
+        isim, tel, adres,
+        urun: urun ? urun.isim : urunId,
+        urunId, adet, not,
+        durum: 'Yeni Bekliyor',
+        tarih: bugunTarih(),
+        kaynak: 'Manuel'
+    };
+    DB.siparisler.push(siparis);
+    await saveDB(); // Backend ile senkronize et
+    
+    closeModal('modal-siparis');
+    ['sip-isim','sip-tel','sip-adres','sip-not'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('sip-adet').value = 1;
+    toast(`Sipariş #${siparis.id} oluşturuldu!`, 'success');
+    aktiviteEkle(`Yeni sipariş: ${isim} → ${urun?.isim || urunId}`, 'orange');
+    siparisleriRender();
+    dashboardGuncelle();
+}
+
+function siparisleriRender(liste) {
+    const data = liste || DB.siparisler;
+    const tbody = document.getElementById('siparis-tbody');
+    if (data.length === 0) {
+        tbody.innerHTML = '';
+        document.getElementById('siparis-no-results').style.display = data.length === 0 && (liste !== undefined) ? 'block' : 'none';
+        if (!liste) tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><i class="fas fa-box-open"></i><h4>Henüz sipariş yok</h4><p>Yeni sipariş eklemek için butona tıklayın</p></div></td></tr>`;
+        return;
+    }
+    document.getElementById('siparis-no-results').style.display = 'none';
+    tbody.innerHTML = data.map(s => `
+        <tr>
+            <td><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)">#${s.id}</span></td>
+            <td>
+                <div style="font-weight:600;color:white">${s.isim}</div>
+                <div style="font-size:11px;color:var(--muted)">${s.kaynak || 'Manuel'}</div>
+            </td>
+            <td style="font-family:'JetBrains Mono',monospace;font-size:12.5px">${s.tel}</td>
+            <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px">${s.urun}</td>
+            <td style="font-size:12px;color:var(--muted)">${s.tarih}</td>
+            <td>
+                <select class="filter-select" style="font-size:12px;padding:5px 8px" onchange="siparisDurumGuncelle(${s.id}, this.value)">
+                    ${['Yeni Bekliyor','İşleniyor','Kargoya Verildi','Tamamlandı','İptal Edildi'].map(d => `<option ${s.durum===d?'selected':''}>${d}</option>`).join('')}
+                </select>
+            </td>
+            <td>
+                <div style="display:flex;gap:6px">
+                    <button class="btn btn-secondary btn-icon" title="Detay" onclick="siparisDetay(${s.id})"><i class="fas fa-eye"></i></button>
+                    <button class="btn btn-danger btn-icon" title="Sil" onclick="siparisConfirmSil(${s.id})"><i class="fas fa-trash"></i></button>
+                </div>
+            </td>
+        </tr>`).join('');
+}
+
+function siparisleriFiltrele() {
+    const q = document.getElementById('sip-search').value.toLowerCase();
+    const d = document.getElementById('sip-filter-durum').value;
+    const filtered = DB.siparisler.filter(s =>
+        (!q || s.isim.toLowerCase().includes(q) || s.tel.includes(q)) &&
+        (!d || s.durum === d)
+    );
+    siparisleriRender(filtered);
+    if (filtered.length === 0) {
+        document.getElementById('siparis-no-results').style.display = 'block';
+    }
+}
+
+async function siparisDurumGuncelle(id, yeniDurum) {
+    const sip = DB.siparisler.find(s => s.id === id);
+    if (!sip) return;
+    const eski = sip.durum;
+    sip.durum = yeniDurum;
+    await saveDB(); // Backend ile senkronize et
+    aktiviteEkle(`Sipariş #${id} durumu: ${eski} → ${yeniDurum}`, yeniDurum === 'Tamamlandı' ? 'green' : 'blue');
+    toast(`Sipariş #${id} güncellendi`, 'info');
+    dashboardGuncelle();
+}
+
+function siparisDetay(id) {
+    const s = DB.siparisler.find(x => x.id === id);
+    if (!s) return;
+    document.getElementById('siparis-detay-icerik').innerHTML = `
+        <div style="background:var(--bg);border-radius:10px;padding:16px;border:1px solid var(--border);margin-bottom:16px">
+            <div class="siparis-detail-row"><strong>Sipariş No</strong> <span>#${s.id}</span></div>
+            <div class="siparis-detail-row"><strong>Müşteri</strong> <span style="font-weight:600;color:white">${s.isim}</span></div>
+            <div class="siparis-detail-row"><strong>Telefon</strong> <span style="font-family:'JetBrains Mono',monospace">${s.tel}</span></div>
+            <div class="siparis-detail-row"><strong>Adres</strong> <span>${s.adres}</span></div>
+            <div class="siparis-detail-row"><strong>Ürün</strong> <span>${s.urun}</span></div>
+            <div class="siparis-detail-row"><strong>Adet</strong> <span>${s.adet || 1}</span></div>
+            <div class="siparis-detail-row"><strong>Tarih</strong> <span>${s.tarih}</span></div>
+            <div class="siparis-detail-row"><strong>Kaynak</strong> ${s.kaynak === 'WhatsApp Bot' ? '<span class="badge badge-green"><i class="fab fa-whatsapp"></i> WhatsApp Bot</span>' : '<span class="badge badge-muted">Manuel</span>'}</div>
+            <div class="siparis-detail-row"><strong>Durum</strong> ${durumBadge(s.durum)}</div>
+            ${s.not ? `<div class="siparis-detail-row"><strong>Not</strong> <span style="color:var(--muted)">${s.not}</span></div>` : ''}
+        </div>`;
+    openModal('modal-siparis-detay');
+}
+
+function siparisConfirmSil(id) {
+    openConfirm(`Sipariş #${id} silinsin mi?`, 'Bu işlem geri alınamaz.', async () => {
+        DB.siparisler = DB.siparisler.filter(s => s.id !== id);
+        await saveDB(); // Backend ile senkronize et
+        siparisleriRender();
+        dashboardGuncelle();
+        toast(`Sipariş #${id} silindi`, 'warning');
+        aktiviteEkle(`Sipariş #${id} silindi`, 'red');
+    });
+}
+
+// ===================== ÜRÜNLER =====================
+function urunleriRender(liste) {
+    const data = liste || DB.urunler;
+    const grid = document.getElementById('urun-grid');
+    const noRes = document.getElementById('urun-no-results');
+    if (data.length === 0) { grid.innerHTML = ''; noRes.style.display = 'block'; return; }
+    noRes.style.display = 'none';
+    grid.innerHTML = data.map(u => `
+        <div class="product-card">
+            <div class="product-id">${u.id}</div>
+            <div class="product-name">${u.isim}</div>
+            <div class="product-desc">${u.aciklama}</div>
+            <div class="product-footer">
+                <div class="product-price">${u.fiyat}</div>
+                <div class="product-actions">
+                    <button class="btn btn-secondary btn-icon" title="Düzenle" onclick="urunDuzenle('${u.id}')"><i class="fas fa-pen"></i></button>
+                    <button class="btn btn-danger btn-icon" title="Sil" onclick="urunConfirmSil('${u.id}')"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+        </div>`).join('');
+}
+
+function urunleriFiltrele() {
+    const q = document.getElementById('urun-search').value.toLowerCase();
+    const filtered = DB.urunler.filter(u => u.isim.toLowerCase().includes(q) || u.id.toLowerCase().includes(q));
+    urunleriRender(filtered);
+}
+
+function urunModalAc() {
+    document.getElementById('urun-modal-title').innerText = 'Yeni Ürün Ekle';
+    document.getElementById('urun-edit-id').value = '';
+    ['urun-id','urun-isim','urun-fiyat','urun-aciklama'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('urun-id').disabled = false;
+    openModal('modal-urun');
+}
+
+function urunDuzenle(id) {
+    const u = DB.urunler.find(x => x.id === id);
+    if (!u) return;
+    document.getElementById('urun-modal-title').innerText = 'Ürünü Düzenle';
+    document.getElementById('urun-edit-id').value = id;
+    document.getElementById('urun-id').value = u.id;
+    document.getElementById('urun-id').disabled = true;
+    document.getElementById('urun-isim').value = u.isim;
+    document.getElementById('urun-fiyat').value = u.fiyat;
+    document.getElementById('urun-aciklama').value = u.aciklama;
+    openModal('modal-urun');
+}
+
+async function urunKaydet() {
+    const editId = document.getElementById('urun-edit-id').value;
+    const id = document.getElementById('urun-id').value.trim();
+    const isim = document.getElementById('urun-isim').value.trim();
+    const fiyat = document.getElementById('urun-fiyat').value.trim();
+    const aciklama = document.getElementById('urun-aciklama').value.trim();
+    if (!isim || !fiyat || !aciklama) { toast('Zorunlu alanları doldurun!', 'error'); return; }
+    
+    if (editId) {
+        const u = DB.urunler.find(x => x.id === editId);
+        if (u) { u.isim = isim; u.fiyat = fiyat; u.aciklama = aciklama; }
+        toast(`${isim} güncellendi`, 'success');
+        aktiviteEkle(`Ürün güncellendi: ${isim}`, 'green');
+    } else {
+        if (!id) { toast('Ürün kodu gerekli!', 'error'); return; }
+        if (DB.urunler.find(u => u.id === id)) { toast('Bu ürün kodu zaten var!', 'error'); return; }
+        DB.urunler.push({ id, isim, fiyat, aciklama });
+        toast(`${isim} eklendi`, 'success');
+        aktiviteEkle(`Yeni ürün eklendi: ${isim}`, 'green');
+    }
+    
+    await saveDB(); // Senkronize et
+    closeModal('modal-urun');
+    urunleriRender();
+    siparisSiparisMOdalUrunDoldur();
+}
+
+function urunConfirmSil(id) {
+    const u = DB.urunler.find(x => x.id === id);
+    openConfirm(`"${u?.isim}" silinsin mi?`, 'Bu işlem geri alınamaz.', async () => {
+        DB.urunler = DB.urunler.filter(x => x.id !== id);
+        await saveDB();
+        urunleriRender();
+        toast('Ürün silindi', 'warning');
+        aktiviteEkle(`Ürün silindi: ${id}`, 'red');
+    });
+}
+
+function siparisSiparisMOdalUrunDoldur() {
+    const sel = document.getElementById('sip-urun');
+    sel.innerHTML = DB.urunler.map(u => `<option value="${u.id}">${u.isim} — ${u.fiyat}</option>`).join('');
+}
+
+// ===================== ŞİKAYETLER =====================
+async function sikayetEkle() {
+    const isim = document.getElementById('sik-isim').value.trim();
+    const tel = document.getElementById('sik-tel').value.trim();
+    const konu = document.getElementById('sik-konu').value;
+    const aciklama = document.getElementById('sik-aciklama').value.trim();
+    if (!isim) { toast('Müşteri adı gerekli!', 'error'); return; }
+    DB.sikayetler.push({ id: DB.sikayetler.length + 1, isim, tel, konu, aciklama, durum: 'Açık', tarih: bugunTarih() });
+    
+    await saveDB();
+    closeModal('modal-sikayet');
+    ['sik-isim','sik-tel','sik-aciklama'].forEach(id => document.getElementById(id).value = '');
+    toast('Şikayet kaydedildi', 'success');
+    aktiviteEkle(`Yeni şikayet: ${isim} — ${konu}`, 'yellow');
+    sikayetleriRender();
+    dashboardGuncelle();
+}
+
+function sikayetleriRender() {
+    const tbody = document.getElementById('sikayet-tbody');
+    const empty = document.getElementById('sikayet-empty');
+    if (DB.sikayetler.length === 0) { tbody.innerHTML = ''; empty.style.display = 'flex'; empty.style.flexDirection = 'column'; empty.style.alignItems = 'center'; return; }
+    empty.style.display = 'none';
+    tbody.innerHTML = DB.sikayetler.map(s => `
+        <tr>
+            <td><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)">#${s.id}</span></td>
+            <td><div style="font-weight:600;color:white">${s.isim}</div><div style="font-size:11px;color:var(--muted)">${s.tel || '—'}</div></td>
+            <td>${s.konu}</td>
+            <td style="font-size:12px;color:var(--muted)">${s.tarih}</td>
+            <td>
+                <select class="filter-select" style="font-size:12px;padding:5px 8px" onchange="sikayetDurumGuncelle(${s.id}, this.value)">
+                    ${['Açık','İşlemde','Çözüldü'].map(d => `<option ${s.durum===d?'selected':''}>${d}</option>`).join('')}
+                </select>
+            </td>
+            <td>
+                <div style="display:flex;gap:6px">
+                    <button class="btn btn-secondary btn-icon" onclick="sikayetDetay(${s.id})"><i class="fas fa-eye"></i></button>
+                    <button class="btn btn-danger btn-icon" onclick="sikayetSil(${s.id})"><i class="fas fa-trash"></i></button>
+                </div>
+            </td>
+        </tr>`).join('');
+}
+
+async function sikayetDurumGuncelle(id, durum) {
+    const s = DB.sikayetler.find(x => x.id === id);
+    if (s) { s.durum = durum; await saveDB(); toast('Şikayet durumu güncellendi', 'info'); dashboardGuncelle(); }
+}
+
+function sikayetDetay(id) {
+    const s = DB.sikayetler.find(x => x.id === id);
+    if (!s) return;
+    document.getElementById('sikayet-detay-icerik').innerHTML = `
+        <div style="background:var(--bg);border-radius:10px;padding:16px;border:1px solid var(--border)">
+            <div class="siparis-detail-row"><strong>Müşteri</strong> <span style="font-weight:600;color:white">${s.isim}</span></div>
+            <div class="siparis-detail-row"><strong>Telefon</strong> <span>${s.tel || '—'}</span></div>
+            <div class="siparis-detail-row"><strong>Konu</strong> <span>${s.konu}</span></div>
+            <div class="siparis-detail-row"><strong>Tarih</strong> <span>${s.tarih}</span></div>
+            <div class="siparis-detail-row"><strong>Durum</strong> <span>${s.durum}</span></div>
+            ${s.aciklama ? `<div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)"><div style="font-size:11px;color:var(--muted);margin-bottom:6px">AÇIKLAMA</div><div style="font-size:13.5px;line-height:1.6">${s.aciklama}</div></div>` : ''}
+        </div>`;
+    openModal('modal-sikayet-detay');
+}
+
+function sikayetSil(id) {
+    openConfirm('Şikayet silinsin mi?', '', async () => {
+        DB.sikayetler = DB.sikayetler.filter(x => x.id !== id);
+        await saveDB();
+        sikayetleriRender(); dashboardGuncelle(); toast('Şikayet silindi', 'warning');
+    });
+}
+
+// ===================== KULLANICILAR =====================
+async function kullaniciEkle() {
+    const isim = document.getElementById('kul-isim').value.trim();
+    const username = document.getElementById('kul-username').value.trim().toLowerCase();
+    const sifre = document.getElementById('kul-sifre').value;
+    const dept = document.getElementById('kul-dept').value.trim();
+    const rol = document.getElementById('kul-rol').value;
+    if (!isim || !username || !sifre) { toast('Zorunlu alanları doldurun!', 'error'); return; }
+    if (DB.kullanicilar.find(k => k.id === username)) { toast('Bu kullanıcı adı zaten var!', 'error'); return; }
+    
+    DB.kullanicilar.push({ id: username, sifre, isim, rol, dept, tarih: bugunTarih() });
+    await saveDB();
+    closeModal('modal-kullanici');
+    ['kul-isim','kul-username','kul-sifre','kul-dept'].forEach(id => document.getElementById(id).value = '');
+    toast(`${isim} kullanıcısı oluşturuldu`, 'success');
+    aktiviteEkle(`Yeni kullanıcı: ${isim} (${rol})`, 'purple');
+    kullanicilariRender();
+}
+
+function kullanicilariRender() {
+    const tbody = document.getElementById('kullanici-tbody');
+    tbody.innerHTML = DB.kullanicilar.map((k, i) => {
+        const colors = ['var(--orange)','var(--blue)','var(--green)','var(--purple)','var(--yellow)'];
+        const c = colors[i % colors.length];
+        return `<tr>
+            <td>
+                <div style="display:flex;align-items:center;gap:12px">
+                    <div class="user-avatar" style="background:${c}22;color:${c}">${k.isim[0]}</div>
+                    <div><div style="font-weight:600;color:white">${k.isim}</div><div style="font-size:11px;color:var(--muted)">${k.dept || '—'}</div></div>
+                </div>
+            </td>
+            <td>${rolBadge(k.rol)}</td>
+            <td><span style="font-family:'JetBrains Mono',monospace;font-size:12.5px">${k.id}</span></td>
+            <td style="font-size:12px;color:var(--muted)">${k.tarih || '—'}</td>
+            <td>
+                ${k.id === 'admin' ? '<span style="font-size:12px;color:var(--muted);font-style:italic">Değiştirilemez</span>' : `
+                <div style="display:flex;gap:6px">
+                    <button class="btn btn-danger btn-icon" onclick="kullaniciSil('${k.id}')"><i class="fas fa-trash"></i></button>
+                </div>`}
+            </td>
+        </tr>`;
+    }).join('');
+}
+
+function kullaniciSil(id) {
+    const k = DB.kullanicilar.find(x => x.id === id);
+    openConfirm(`"${k?.isim}" silinsin mi?`, '', async () => {
+        DB.kullanicilar = DB.kullanicilar.filter(x => x.id !== id);
+        await saveDB();
+        kullanicilariRender(); toast('Kullanıcı silindi', 'warning');
+        aktiviteEkle(`Kullanıcı silindi: ${id}`, 'red');
+    });
+}
+
+// ===================== API AYARLARI =====================
+async function apiAyarlariKaydet() {
+    DB.ayarlar.apiKey = document.getElementById('api-key').value.trim();
+    DB.ayarlar.wpPhoneId = document.getElementById('wp-phone-id').value.trim();
+    DB.ayarlar.wpBizId = document.getElementById('wp-biz-id').value.trim();
+    DB.ayarlar.wpToken = document.getElementById('wp-token').value.trim();
+    DB.ayarlar.model = document.getElementById('api-model').value;
+    DB.ayarlar.prompt = document.getElementById('api-prompt').value;
+    
+    await saveDB();
+    closeModal('modal-api');
+    toast('API ayarları kaydedildi!', 'success');
+    aktiviteEkle('API ayarları güncellendi', 'blue');
+    document.getElementById('bot-durum-text').innerText = DB.ayarlar.apiKey ? '✓ Yapılandırıldı' : 'Yapılandırılmamış';
+    document.getElementById('bot-durum-text').style.color = DB.ayarlar.apiKey ? 'var(--green)' : 'var(--muted)';
+    document.getElementById('bot-model-text').innerText = DB.ayarlar.model || '—';
+}
+
+// ===================== SİSTEM PROMPTU =====================
+async function sistemPromptuGuncelle() {
+    const urunListesi = DB.urunler.map(u => `- ${u.isim}: ${u.fiyat} (${u.aciklama})`).join('\n');
+    const yeniPrompt = `Sen Prohummer şirketinin WhatsApp asistanısın.\nKonum: ${DB.ayarlar.konum}\n\nÜrünler:\n${urunListesi}\n\nKurallar:\n1. Müşteri ürün sorarsa kibarca yardımcı ol.\n2. Sipariş vermek isterse; ad, soyad, telefon numarası ve tam adresini tek tek iste.\n3. ÇOK ÖNEMLİ: Müşteri tüm bilgileri verip siparişi onayladığında, ona teşekkür et ve mesajının EN SONUNA mutlaka şu formatta gizli bir kayıt kodu ekle:\n[SIPARIS: Müşteri Adı Soyadı | Telefonu | Adresi | Aldığı Ürün]`;
+    DB.ayarlar.prompt = yeniPrompt;
+    document.getElementById('api-prompt').value = yeniPrompt;
+    await saveDB();
+    toast(`Sistem promptu ${DB.urunler.length} ürünle güncellendi!`, 'success');
+}
+
+// ===================== WHATSAPP SİMÜLATÖRÜ =====================
+async function wpGonder() {
+    const input = document.getElementById('wp-user-input');
+    const msg = input.value.trim();
+    if (!msg) return;
+    input.value = '';
+    botMesajSayisi++;
+    document.getElementById('bot-mesaj-sayisi').innerText = botMesajSayisi;
+    chatHistory.push({ role: 'user', content: msg });
+    
+    const chatEl = document.getElementById('wp-chat-messages');
+    chatEl.innerHTML += `<div class="chat-bubble bubble-out">${msg}</div>`;
+    chatEl.scrollTop = chatEl.scrollHeight;
+    
+    if (!DB.ayarlar.apiKey) {
+        toast("Ayarlardan OpenAI API anahtarı eklemelisiniz!", "error");
+        return;
+    }
+    
+    document.getElementById('wp-typing').style.display = 'block';
+    try {
+        const res = await fetch(`${API_BASE}/bot/mesaj`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                mesaj_gecmisi: chatHistory,
+                api_key: DB.ayarlar.apiKey,
+                model: DB.ayarlar.model,
+                prompt: DB.ayarlar.prompt
+            })
+        });
+        
+        const data = await res.json();
+        document.getElementById('wp-typing').style.display = 'none';
+        
+        if (res.ok) {
+            chatHistory.push({ role: 'assistant', content: data.ham_cevap });
+            chatEl.innerHTML += `<div class="chat-bubble bubble-in">${data.cevap}</div>`;
+            
+            // Eğer bot yeni bir sipariş algıladıysa ve kaydettiyse
+            if (data.yeni_siparis) {
+                DB.siparisler.push(data.yeni_siparis);
+                await saveDB(); // UI state'i ile eşitle
+                
+                const sipDetay = `${data.yeni_siparis.isim} | ${data.yeni_siparis.tel} | ${data.yeni_siparis.urun}`;
+                chatEl.innerHTML += `<div class="chat-bubble bubble-sys"><i class="fas fa-bell"></i> YENİ SİPARİŞ ALINDI → ${sipDetay}</div>`;
+                
+                aktiviteEkle(`🤖 Bot siparişi: ${data.yeni_siparis.isim} → ${data.yeni_siparis.urun}`, 'orange');
+                toast(`Yeni Bot Siparişi: ${data.yeni_siparis.isim}`, 'success');
+                dashboardGuncelle();
+            }
+        } else {
+            throw new Error(data.detail || "Bilinmeyen hata");
+        }
+    } catch(e) {
+        document.getElementById('wp-typing').style.display = 'none';
+        chatEl.innerHTML += `<div class="chat-bubble bubble-sys" style="color:var(--red)">API Hatası: ${e.message}</div>`;
+    }
+    chatEl.scrollTop = chatEl.scrollHeight;
+}
+
+function chatTemizle() {
+    chatHistory = [];
+    document.getElementById('wp-chat-messages').innerHTML = `<div class="chat-bubble bubble-in">${DB.ayarlar.karsilama}</div>`;
+}
+
+// ===================== AYARLAR =====================
+async function sirketBilgileriKaydet() {
+    DB.ayarlar.sirket = document.getElementById('sirket-isim').value;
+    DB.ayarlar.konum = document.getElementById('sirket-konum').value;
+    DB.ayarlar.karsilama = document.getElementById('sirket-karsilama').value;
+    await saveDB();
+    toast('Şirket bilgileri kaydedildi', 'success');
+    aktiviteEkle('Şirket bilgileri güncellendi', 'blue');
+}
+
+function veriExport() {
+    const blob = new Blob([JSON.stringify(DB, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+    a.download = `prohummer_data_${bugunTarih().replace(/\./g,'')}.json`; a.click();
+    toast('Veri dışa aktarıldı', 'success');
+}
+
+function veriSifirlaConfirm() {
+    openConfirm('Tüm siparişler silinsin mi?', 'Bu işlem geri alınamaz!', async () => {
+        DB.siparisler = [];
+        await saveDB();
+        toast('Siparişler sıfırlandı', 'warning');
+        dashboardGuncelle();
+    });
+}
+
+// ===================== AKTİVİTE =====================
+async function aktiviteEkle(metin, renk) {
+    const renkler = { orange:'var(--orange)', green:'var(--green)', red:'var(--red)', blue:'var(--blue)', yellow:'var(--yellow)', purple:'var(--purple)' };
+    const r = renkler[renk] || 'var(--muted)';
+    DB.aktivite.unshift({ metin, renk: r, saat: suankiSaat() });
+    if (DB.aktivite.length > 50) DB.aktivite.pop();
+    await saveDB();
+    
+    const log = document.getElementById('activity-log');
+    if (log) log.innerHTML = DB.aktivite.slice(0, 15).map(a => `
+        <div class="activity-item">
+            <div class="activity-dot" style="background:${a.renk}"></div>
+            <div><div class="activity-text">${a.metin}</div><div class="activity-time">${a.saat}</div></div>
+        </div>`).join('');
+}
+
+// ===================== YARDIMCILAR =====================
+function bugunTarih() {
+    const d = new Date();
+    return `${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}.${d.getFullYear()}`;
+}
+function suankiSaat() {
+    const d = new Date();
+    return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+}
+
+function durumBadge(d) {
+    const m = { 'Yeni Bekliyor':'badge-orange', 'İşleniyor':'badge-blue', 'Kargoya Verildi':'badge-purple', 'Tamamlandı':'badge-green', 'İptal Edildi':'badge-red' };
+    const icons = { 'Yeni Bekliyor':'fa-clock', 'İşleniyor':'fa-sync', 'Kargoya Verildi':'fa-truck', 'Tamamlandı':'fa-check', 'İptal Edildi':'fa-times' };
+    return `<span class="badge ${m[d]||'badge-muted'}"><i class="fas ${icons[d]||'fa-circle'}"></i> ${d}</span>`;
+}
+
+function rolBadge(r) {
+    const m = { 'Süper Admin':'badge-purple', 'Sipariş Personeli':'badge-blue', 'Destek Personeli':'badge-yellow', 'Depo Personeli':'badge-orange', 'Muhasebe':'badge-green', 'Müdür':'badge-red' };
+    return `<span class="badge ${m[r]||'badge-muted'}">${r}</span>`;
+}
+
+function toast(msg, type='info') {
+    const icons = { success:'fa-check-circle', error:'fa-times-circle', warning:'fa-exclamation-triangle', info:'fa-info-circle' };
+    const colors = { success:'var(--green)', error:'var(--red)', warning:'var(--yellow)', info:'var(--blue)' };
+    const el = document.createElement('div');
+    el.className = `toast ${type}`;
+    el.innerHTML = `<i class="fas ${icons[type]}" style="color:${colors[type]}"></i> ${msg}`;
+    document.getElementById('toast-area').appendChild(el);
+    setTimeout(() => el.remove(), 3500);
+}
+
+let confirmCallback = null;
+function openConfirm(title, text, cb) {
+    document.getElementById('confirm-title').innerText = title;
+    document.getElementById('confirm-text').innerText = text || '';
+    confirmCallback = cb;
+    document.getElementById('confirm-dialog').classList.add('open');
+}
+document.getElementById('confirm-yes').onclick = () => { closeConfirm(); if (confirmCallback) confirmCallback(); };
+function closeConfirm() { document.getElementById('confirm-dialog').classList.remove('open'); }
+
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+document.querySelectorAll('.modal-overlay').forEach(m => {
+    m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); });
+});
+
+// ===================== INIT =====================
+window.addEventListener('DOMContentLoaded', async () => {
+    await initDB();
+    siparisSiparisMOdalUrunDoldur();
+});
+</script>
+</body>
+</html>
