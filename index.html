@@ -217,6 +217,16 @@
         .no-results { display: none; }
         #wp-typing { display: none; padding: 4px 12px; }
         #wp-typing span { font-size: 12px; color: var(--muted); font-style: italic; }
+    .neo-dashboard-container { background: linear-gradient(135deg, #00b4db, #0083b0); padding: 20px; min-height: calc(100vh - 60px); border-radius: 10px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+.neo-header { text-align: center; color: white; font-size: 24px; font-weight: bold; margin-bottom: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+.neo-grid { display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: auto; gap: 15px; }
+.neo-card { background: #06113C; border-radius: 12px; padding: 20px; color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.2); position: relative; overflow: hidden; }
+.neo-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: #00d2ff; }
+.neo-card h3 { font-size: 11px; color: #a0aec0; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 15px 0; }
+.neo-number { font-size: 42px; font-weight: 300; margin: 0 0 5px 0; line-height: 1; color: #00ffcc; }
+.neo-subtext { font-size: 11px; color: #718096; }
+.box-gelen { grid-column: span 1; grid-row: span 2; }
+.box-grafik { grid-column: span 2; grid-row: span 2; display:flex; flex-direction:column; align-items:center; justify-content:center;}
     </style>
 </head>
 <body>
@@ -437,40 +447,45 @@
 
     <main>
 
-        <div id="dashboard" class="sayfa">
-            <div class="page-header">
-                <h2>Özet Ekranı</h2>
-                <p id="dashboard-tarih">Bugünün özeti</p>
-            </div>
-            <div class="stat-grid">
-                <div class="stat-card">
-                    <div class="stat-icon" style="background:rgba(249,115,22,.12)"><i class="fas fa-box-open" style="color:var(--orange)"></i></div>
-                    <div><div class="stat-label">Bekleyen Sipariş</div><div class="stat-val" id="stat-bekleyen">0</div></div>
+    <div id="dashboard" class="sayfa active">
+    <div class="neo-dashboard-container">
+        <div class="neo-header" id="dash-user-name">Prohummer CRM</div>
+        <div class="neo-grid">
+            <div class="neo-card box-gelen">
+                <h3>GELEN SİPARİŞLER</h3>
+                <div class="neo-number" id="neo-toplam-sip">0</div>
+                <div class="neo-subtext">bu hafta</div>
+                <hr style="border-color:#1a2b5e; margin:20px 0;">
+                <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:10px;">
+                    <span style="color:#00ffcc"><i class="fab fa-whatsapp"></i> WhatsApp Bot</span><span id="neo-wp-sip">0</span>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background:rgba(34,197,94,.12)"><i class="fas fa-check-circle" style="color:var(--green)"></i></div>
-                    <div><div class="stat-label">Tamamlanan</div><div class="stat-val" id="stat-tamamlanan">0</div></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background:rgba(59,130,246,.12)"><i class="fas fa-tags" style="color:var(--blue)"></i></div>
-                    <div><div class="stat-label">Aktif Ürün</div><div class="stat-val" id="stat-urun">0</div></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background:rgba(234,179,8,.12)"><i class="fas fa-exclamation-circle" style="color:var(--yellow)"></i></div>
-                    <div><div class="stat-label">Açık Şikayet</div><div class="stat-val" id="stat-sikayet">0</div></div>
+                <div style="display:flex; justify-content:space-between; font-size:12px;">
+                    <span style="color:#a0aec0">Manuel Eklenen</span><span id="neo-manuel-sip">0</span>
                 </div>
             </div>
-            <div class="two-col">
-                <div class="col-card">
-                    <div class="col-card-title"><i class="fas fa-clock" style="color:var(--orange)"></i> Son Siparişler</div>
-                    <div id="dashboard-son-siparisler" style="display:flex;flex-direction:column;gap:10px"></div>
-                </div>
-                <div class="col-card">
-                    <div class="col-card-title"><i class="fas fa-bell" style="color:var(--yellow)"></i> Son Aktiviteler</div>
-                    <div id="activity-log" style="max-height:300px;overflow-y:auto"></div>
-                </div>
+            <div class="neo-card">
+                <h3>DEVAM EDEN (BEKLEYEN)</h3>
+                <div class="neo-number" id="neo-bekleyen" style="color:white;">0</div>
+            </div>
+            <div class="neo-card">
+                <h3>AÇIK ŞİKAYETLER</h3>
+                <div class="neo-number" id="neo-sikayet" style="color:white;">0</div>
+            </div>
+            <div class="neo-card box-grafik">
+                <h3 style="align-self:flex-start; width:100%;">SİPARİŞ KAYNAKLARI</h3>
+                <div style="width:120px; height:120px; border-radius:50%; border:8px solid #1a2b5e; border-top-color:#00ffcc; margin:20px 0;"></div>
+            </div>
+            <div class="neo-card">
+                <h3>TAMAMLANANLAR</h3>
+                <div class="neo-number" id="neo-tamamlanan" style="color:#d53f8c;">0</div>
+            </div>
+            <div class="neo-card">
+                <h3>SİSTEMDEKİ ÜRÜNLER</h3>
+                <div class="neo-number" id="neo-urunler" style="color:white;">0</div>
             </div>
         </div>
+    </div>
+</div>
 
         <div id="siparisler" class="sayfa">
             <div class="page-header" style="display:flex;align-items:center;justify-content:space-between">
@@ -646,7 +661,10 @@
 </div>
 
 <script>
-const API_BASE = "http://localhost:8000/api";
+// AŞAĞIDAKİ YERE SADEHOST SUNUCU IP ADRESİNİ YAZACAKSIN
+const API_BASE = "http://178.210.168.27:8000/api"; 
+const SECURITY_TOKEN = "PROHUMMER_2026_SECRET_KEY";
+
 let DB = {};
 let isDBLoaded = false;
 let aktifKullanici = null;
@@ -656,10 +674,14 @@ let chatHistory = [];
 // ===================== API İLE SENKRONİZASYON =====================
 async function initDB() {
     try {
-        const res = await fetch(`${API_BASE}/db`);
+        const res = await fetch(`${API_BASE}/db`, {
+            headers: { "x-token": SECURITY_TOKEN } // GÜVENLİK DUVARINI GEÇİŞ
+        });
+        
+        if (!res.ok) throw new Error("Erişim Engellendi veya Sunucu Yok");
         DB = await res.json();
         
-        // Eksik alanları tamamla (İlk kurulumda JSON dosyasında eksikse)
+        // Eksik alanları tamamla
         if (!DB.kullanicilar) {
             DB.kullanicilar = [
                 { id: "admin", sifre: "1234", isim: "Sistem Yöneticisi", rol: "Süper Admin", dept: "Yönetim", tarih: "01.01.2025" },
@@ -679,7 +701,7 @@ async function initDB() {
         isDBLoaded = true;
     } catch(e) {
         console.error("Veritabanı çekilemedi", e);
-        toast("Sunucuya bağlanılamadı! FastAPI çalışıyor mu?", "error");
+        toast("Sunucuya bağlanılamadı veya Güvenlik Duvarı engelledi!", "error");
     }
 }
 
@@ -687,7 +709,10 @@ async function saveDB() {
     try {
         await fetch(`${API_BASE}/db`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { 
+                "Content-Type": "application/json",
+                "x-token": SECURITY_TOKEN 
+            },
             body: JSON.stringify(DB)
         });
     } catch(e) {
@@ -721,7 +746,6 @@ async function girisYap() {
         aktiviteEkle(`${kul.isim} sisteme giriş yaptı`, 'blue');
         toast(`Hoş geldin, ${kul.isim.split(' ')[0]}! 👋`, 'success');
         
-        // Ayarları UI'a yükle
         document.getElementById('api-key').value = DB.ayarlar.apiKey || "";
         document.getElementById('api-model').value = DB.ayarlar.model || "gpt-4o-mini";
         document.getElementById('api-prompt').value = DB.ayarlar.prompt || "";
@@ -760,26 +784,13 @@ function sayfaGoster(id) {
 
 // ===================== DASHBOARD =====================
 function dashboardGuncelle() {
-    const bekleyen = DB.siparisler.filter(s => s.durum === 'Yeni Bekliyor' || s.durum === 'İşleniyor').length;
-    const tamamlanan = DB.siparisler.filter(s => s.durum === 'Tamamlandı').length;
-    const acikSikayet = DB.sikayetler.filter(s => s.durum !== 'Çözüldü').length;
-    document.getElementById('stat-bekleyen').innerText = bekleyen;
-    document.getElementById('stat-tamamlanan').innerText = tamamlanan;
-    document.getElementById('stat-urun').innerText = DB.urunler.length;
-    document.getElementById('stat-sikayet').innerText = acikSikayet;
-    const now = new Date();
-    document.getElementById('dashboard-tarih').innerText = now.toLocaleDateString('tr-TR', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
-    const sonSip = document.getElementById('dashboard-son-siparisler');
-    const son5 = [...DB.siparisler].reverse().slice(0, 5);
-    if (son5.length === 0) { sonSip.innerHTML = '<div style="color:var(--muted);font-size:13px;text-align:center;padding:20px">Henüz sipariş yok</div>'; return; }
-    sonSip.innerHTML = son5.map(s => `
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">
-            <div>
-                <div style="font-size:13px;font-weight:600;color:white">${s.isim}</div>
-                <div style="font-size:11px;color:var(--muted)">${s.urun} • ${s.tarih}</div>
-            </div>
-            ${durumBadge(s.durum)}
-        </div>`).join('');
+    document.getElementById('neo-toplam-sip').innerText = DB.siparisler.length;
+    document.getElementById('neo-wp-sip').innerText = DB.siparisler.filter(s => s.kaynak === 'WhatsApp Bot').length;
+    document.getElementById('neo-manuel-sip').innerText = DB.siparisler.filter(s => s.kaynak !== 'WhatsApp Bot').length;
+    document.getElementById('neo-bekleyen').innerText = DB.siparisler.filter(s => s.durum === 'Yeni Bekliyor' || s.durum === 'İşleniyor').length;
+    document.getElementById('neo-sikayet').innerText = DB.sikayetler.filter(s => s.durum !== 'Çözüldü').length;
+    document.getElementById('neo-tamamlanan').innerText = DB.siparisler.filter(s => s.durum === 'Tamamlandı').length;
+    document.getElementById('neo-urunler').innerText = DB.urunler.length;
 }
 
 // ===================== SİPARİŞLER =====================
@@ -804,7 +815,7 @@ async function siparisEkle() {
         kaynak: 'Manuel'
     };
     DB.siparisler.push(siparis);
-    await saveDB(); // Backend ile senkronize et
+    await saveDB(); 
     
     closeModal('modal-siparis');
     ['sip-isim','sip-tel','sip-adres','sip-not'].forEach(id => document.getElementById(id).value = '');
@@ -867,7 +878,7 @@ async function siparisDurumGuncelle(id, yeniDurum) {
     if (!sip) return;
     const eski = sip.durum;
     sip.durum = yeniDurum;
-    await saveDB(); // Backend ile senkronize et
+    await saveDB();
     aktiviteEkle(`Sipariş #${id} durumu: ${eski} → ${yeniDurum}`, yeniDurum === 'Tamamlandı' ? 'green' : 'blue');
     toast(`Sipariş #${id} güncellendi`, 'info');
     dashboardGuncelle();
@@ -895,7 +906,7 @@ function siparisDetay(id) {
 function siparisConfirmSil(id) {
     openConfirm(`Sipariş #${id} silinsin mi?`, 'Bu işlem geri alınamaz.', async () => {
         DB.siparisler = DB.siparisler.filter(s => s.id !== id);
-        await saveDB(); // Backend ile senkronize et
+        await saveDB(); 
         siparisleriRender();
         dashboardGuncelle();
         toast(`Sipariş #${id} silindi`, 'warning');
@@ -973,7 +984,7 @@ async function urunKaydet() {
         aktiviteEkle(`Yeni ürün eklendi: ${isim}`, 'green');
     }
     
-    await saveDB(); // Senkronize et
+    await saveDB(); 
     closeModal('modal-urun');
     urunleriRender();
     siparisSiparisMOdalUrunDoldur();
@@ -1171,7 +1182,10 @@ async function wpGonder() {
     try {
         const res = await fetch(`${API_BASE}/bot/mesaj`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                "x-token": SECURITY_TOKEN 
+            },
             body: JSON.stringify({
                 mesaj_gecmisi: chatHistory,
                 api_key: DB.ayarlar.apiKey,
@@ -1187,10 +1201,9 @@ async function wpGonder() {
             chatHistory.push({ role: 'assistant', content: data.ham_cevap });
             chatEl.innerHTML += `<div class="chat-bubble bubble-in">${data.cevap}</div>`;
             
-            // Eğer bot yeni bir sipariş algıladıysa ve kaydettiyse
             if (data.yeni_siparis) {
                 DB.siparisler.push(data.yeni_siparis);
-                await saveDB(); // UI state'i ile eşitle
+                await saveDB(); 
                 
                 const sipDetay = `${data.yeni_siparis.isim} | ${data.yeni_siparis.tel} | ${data.yeni_siparis.urun}`;
                 chatEl.innerHTML += `<div class="chat-bubble bubble-sys"><i class="fas fa-bell"></i> YENİ SİPARİŞ ALINDI → ${sipDetay}</div>`;
