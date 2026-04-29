@@ -435,7 +435,7 @@
             <a href="#" onclick="sayfaGoster('urunler')" data-page="urunler"><i class="fas fa-tags" style="color:var(--green)"></i> Ürünlerimiz</a>
             <a href="#" onclick="sayfaGoster('sikayetler')" data-page="sikayetler"><i class="fas fa-headset" style="color:var(--yellow)"></i> Şikayet & Destek</a>
             <div class="nav-section">BOT</div>
-            <a href="#" onclick="sayfaGoster('bot')" data-page="bot"><i class="fab fa-whatsapp" style="color:#25D366"></i> WhatsApp Bot</a>
+            <a href="#" id="menu-bot" onclick="sayfaGoster('bot')" data-page="bot"><i class="fab fa-whatsapp" style="color:#25D366"></i> WhatsApp Bot</a>
             <div class="nav-section" id="admin-section">YÖNETİM</div>
             <a href="#" onclick="sayfaGoster('kullanicilar')" data-page="kullanicilar" id="menu-kullanicilar"><i class="fas fa-users-cog" style="color:var(--purple)"></i> Sistem Kullanıcıları</a>
             <a href="#" onclick="sayfaGoster('ayarlar')" data-page="ayarlar" id="menu-ayarlar"><i class="fas fa-cog" style="color:var(--blue)"></i> Sistem Ayarları</a>
@@ -732,14 +732,28 @@ async function girisYap() {
         aktifKullanici = kul;
         document.getElementById('active-user-name').innerText = kul.isim;
         document.getElementById('active-user-role').innerText = kul.rol;
+        
+        // Menüleri bul
         const adminSecton = document.getElementById('admin-section');
         const menuKul = document.getElementById('menu-kullanicilar');
         const menuAyar = document.getElementById('menu-ayarlar');
+        const menuBot = document.getElementById('menu-bot'); // Bot menüsü
+        
+        // YETKİ KONTROLÜ BAŞLIYOR
         if (kul.id === 'admin') {
-            adminSecton.style.display = ''; menuKul.style.display = ''; menuAyar.style.display = '';
+            // Adminse her şeyi göster
+            if(adminSecton) adminSecton.style.display = ''; 
+            if(menuKul) menuKul.style.display = ''; 
+            if(menuAyar) menuAyar.style.display = '';
+            if(menuBot) menuBot.style.display = ''; 
         } else {
-            adminSecton.style.display = 'none'; menuKul.style.display = 'none'; menuAyar.style.display = 'none';
+            // Normal personelse ayarları, kullanıcıları ve botu GİZLE
+            if(adminSecton) adminSecton.style.display = 'none'; 
+            if(menuKul) menuKul.style.display = 'none'; 
+            if(menuAyar) menuAyar.style.display = 'none';
+            if(menuBot) menuBot.style.display = 'none'; 
         }
+        
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('app-screen').classList.add('active');
         sayfaGoster('dashboard');
