@@ -662,7 +662,7 @@
 
 <script>
 // AŞAĞIDAKİ YERE SADEHOST SUNUCU IP ADRESİNİ YAZACAKSIN
-const API_BASE = "http://178.210.168.27:8000/api"; 
+const API_BASE = "https://api.prohummerpanel.com.tr/api";
 const SECURITY_TOKEN = "PROHUMMER_2026_SECRET_KEY";
 
 let DB = {};
@@ -684,7 +684,7 @@ async function initDB() {
         // Eksik alanları tamamla
         if (!DB.kullanicilar) {
             DB.kullanicilar = [
-                { id: "admin", sifre: "1234", isim: "Sistem Yöneticisi", rol: "Süper Admin", dept: "Yönetim", tarih: "01.01.2025" },
+                { id: "admin", sifre: "Arda6307!", isim: "Sistem Yöneticisi", rol: "Süper Admin", dept: "Yönetim", tarih: "01.01.2025" },
                 { id: "mahir", sifre: "1234", isim: "Mahir Eken", rol: "Sipariş Personeli", dept: "Satış", tarih: "15.03.2025" }
             ];
         }
