@@ -1204,7 +1204,7 @@ async function wpGonder() {
                 mesaj_gecmisi: chatHistory,
                 api_key: DB.ayarlar.apiKey,
                 model: DB.ayarlar.model,
-                prompt: DB.ayarlar.prompt
+                prompt: DB.ayarlar.prompt + "\n\nŞU AN STOKTAKİ GÜNCEL ÜRÜNLERİMİZ ŞUNLARDIR: " + DB.urunler.map(u => u.isim).join(", ")
             })
         });
         
