@@ -25,13 +25,16 @@
             --purple: #A855F7;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html, body { max-width: 100%; overflow-x: hidden; }
+        img, video, canvas { max-width: 100%; height: auto; }
+        
         body { font-family: 'Sora', sans-serif; background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; }
         ::selection { background: var(--orange); color: white; }
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
 
-        /* LOGIN */
         #login-screen {
             position: fixed; inset: 0; z-index: 100;
             background: radial-gradient(ellipse at 60% 40%, #1a1024 0%, #0F1117 70%);
@@ -39,7 +42,7 @@
         }
         .login-box {
             background: var(--card); border: 1px solid var(--border);
-            border-radius: 20px; padding: 40px; width: 400px;
+            border-radius: 20px; padding: 40px; width: 400px; max-width: 90%;
             box-shadow: 0 0 80px rgba(249,115,22,0.07);
             animation: slideUp .4s ease;
         }
@@ -57,7 +60,6 @@
         .btn-login:active { transform: scale(.98); }
         #login-error { text-align: center; color: var(--red); font-size: 13px; margin-top: 10px; display: none; }
 
-        /* APP LAYOUT */
         #app-screen { display: none; height: 100vh; }
         #app-screen.active { display: flex; }
         aside { width: 240px; background: var(--sidebar); border-right: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; }
@@ -86,7 +88,6 @@
         .page-header h2 { font-size: 24px; font-weight: 700; color: white; }
         .page-header p { font-size: 13px; color: var(--muted); margin-top: 4px; }
 
-        /* CARDS */
         .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
         .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px; display: flex; align-items: center; gap: 16px; transition: transform .2s, box-shadow .2s; }
         .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,.3); }
@@ -94,7 +95,6 @@
         .stat-label { font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
         .stat-val { font-size: 28px; font-weight: 700; color: white; line-height: 1.1; margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
 
-        /* TABLES */
         .table-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
         .table-toolbar { padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
         .table-title { font-size: 15px; font-weight: 600; color: white; }
@@ -105,7 +105,6 @@
         tbody tr:last-child td { border-bottom: none; }
         tbody tr:hover { background: rgba(255,255,255,.02); }
 
-        /* BADGES */
         .badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; }
         .badge-orange { background: rgba(249,115,22,.15); color: var(--orange); border: 1px solid rgba(249,115,22,.2); }
         .badge-green { background: rgba(34,197,94,.12); color: var(--green); border: 1px solid rgba(34,197,94,.2); }
@@ -115,7 +114,6 @@
         .badge-purple { background: rgba(168,85,247,.12); color: var(--purple); border: 1px solid rgba(168,85,247,.2); }
         .badge-muted { background: rgba(100,116,139,.12); color: var(--muted); border: 1px solid rgba(100,116,139,.2); }
 
-        /* BUTTONS */
         .btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 16px; border-radius: 9px; font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: all .15s; }
         .btn-primary { background: var(--orange); color: white; }
         .btn-primary:hover { background: var(--orange-dark); }
@@ -127,17 +125,15 @@
         .btn-danger:hover { background: rgba(239,68,68,.22); }
         .btn-icon { padding: 7px 10px; }
 
-        /* SEARCH */
         .search-bar { position: relative; }
         .search-bar i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 13px; }
         .search-bar input { background: var(--bg); border: 1px solid var(--border); border-radius: 9px; padding: 9px 14px 9px 34px; color: var(--text); font-family: 'Sora', sans-serif; font-size: 13px; outline: none; width: 230px; transition: border .2s; }
         .search-bar input:focus { border-color: var(--orange); }
 
-        /* MODAL */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.65); z-index: 200; display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
         .modal-overlay.open { display: flex; }
         .modal { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 28px; width: 480px; max-height: 85vh; overflow-y: auto; animation: slideUp .25s ease; }
-        .modal-lg { width: 620px; }
+        .modal-lg { width: 620px; max-width: 95%; }
         .modal h3 { font-size: 17px; font-weight: 700; color: white; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
         .form-row { margin-bottom: 14px; }
         .form-row label { display: block; font-size: 12px; color: var(--muted); font-weight: 600; margin-bottom: 6px; }
@@ -147,7 +143,6 @@
         .form-row textarea { resize: vertical; min-height: 80px; }
         .modal-footer { display: flex; gap: 10px; justify-content: flex-end; margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--border); }
 
-        /* PRODUCT GRID */
         .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
         .product-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 18px; transition: transform .2s, border-color .2s; }
         .product-card:hover { transform: translateY(-3px); border-color: rgba(249,115,22,.3); }
@@ -158,14 +153,12 @@
         .product-price { font-size: 16px; font-weight: 700; color: var(--orange); font-family: 'JetBrains Mono', monospace; }
         .product-actions { display: flex; gap: 6px; }
 
-        /* ACTIVITY LOG */
         .activity-item { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
         .activity-item:last-child { border-bottom: none; }
         .activity-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
         .activity-time { font-size: 11px; color: var(--muted); font-family: 'JetBrains Mono', monospace; white-space: nowrap; margin-top: 2px; }
         .activity-text { font-size: 13px; color: var(--text); line-height: 1.5; }
 
-        /* TOAST */
         #toast-area { position: fixed; top: 20px; right: 20px; z-index: 999; display: flex; flex-direction: column; gap: 10px; }
         .toast { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 12px 18px; display: flex; align-items: center; gap: 12px; font-size: 13.5px; font-weight: 500; box-shadow: 0 8px 30px rgba(0,0,0,.4); animation: slideIn .3s ease; min-width: 260px; }
         @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: none; } }
@@ -174,15 +167,13 @@
         .toast.info { border-left: 3px solid var(--blue); }
         .toast.warning { border-left: 3px solid var(--yellow); }
 
-        /* CONFIRM DIALOG */
         #confirm-dialog { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.7); z-index: 500; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
         #confirm-dialog.open { display: flex; }
-        .confirm-box { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 28px; width: 360px; animation: slideUp .2s ease; }
+        .confirm-box { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 28px; width: 360px; max-width: 90%; animation: slideUp .2s ease; }
         .confirm-box h4 { font-size: 16px; font-weight: 700; color: white; margin-bottom: 8px; }
         .confirm-box p { font-size: 13.5px; color: var(--muted); margin-bottom: 22px; }
         .confirm-actions { display: flex; gap: 10px; }
 
-        /* MISC */
         .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
         .empty-state i { font-size: 48px; margin-bottom: 16px; opacity: .4; }
         .empty-state h4 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
@@ -217,16 +208,21 @@
         .no-results { display: none; }
         #wp-typing { display: none; padding: 4px 12px; }
         #wp-typing span { font-size: 12px; color: var(--muted); font-style: italic; }
-    .neo-dashboard-container { background: linear-gradient(135deg, #00b4db, #0083b0); padding: 20px; min-height: calc(100vh - 60px); border-radius: 10px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-.neo-header { text-align: center; color: white; font-size: 24px; font-weight: bold; margin-bottom: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
-.neo-grid { display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: auto; gap: 15px; }
-.neo-card { background: #06113C; border-radius: 12px; padding: 20px; color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.2); position: relative; overflow: hidden; }
-.neo-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: #00d2ff; }
-.neo-card h3 { font-size: 11px; color: #a0aec0; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 15px 0; }
-.neo-number { font-size: 42px; font-weight: 300; margin: 0 0 5px 0; line-height: 1; color: #00ffcc; }
-.neo-subtext { font-size: 11px; color: #718096; }
-.box-gelen { grid-column: span 1; grid-row: span 2; }
-.box-grafik { grid-column: span 2; grid-row: span 2; display:flex; flex-direction:column; align-items:center; justify-content:center;}
+        .neo-dashboard-container { background: linear-gradient(135deg, #00b4db, #0083b0); padding: 20px; min-height: calc(100vh - 60px); border-radius: 10px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .neo-header { text-align: center; color: white; font-size: 24px; font-weight: bold; margin-bottom: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        .neo-grid { display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: auto; gap: 15px; }
+        .neo-card { background: #06113C; border-radius: 12px; padding: 20px; color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.2); position: relative; overflow: hidden; }
+        .neo-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: #00d2ff; }
+        .neo-card h3 { font-size: 11px; color: #a0aec0; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 15px 0; }
+        .neo-number { font-size: 42px; font-weight: 300; margin: 0 0 5px 0; line-height: 1; color: #00ffcc; }
+        .neo-subtext { font-size: 11px; color: #718096; }
+        .box-gelen { grid-column: span 1; grid-row: span 2; }
+        .box-grafik { grid-column: span 2; grid-row: span 2; display:flex; flex-direction:column; align-items:center; justify-content:center;}
+        
+        @media (max-width: 992px) {
+            .stat-grid, .two-col, .neo-grid { grid-template-columns: 1fr; }
+            .box-grafik, .box-gelen { grid-column: span 1; grid-row: span 1; }
+        }
     </style>
 </head>
 <body>
@@ -661,7 +657,6 @@
 </div>
 
 <script>
-// AŞAĞIDAKİ YERE SADEHOST SUNUCU IP ADRESİNİ YAZACAKSIN
 const API_BASE = "https://api.prohummerpanel.com.tr/api";
 const SECURITY_TOKEN = "PROHUMMER_2026_SECRET_KEY";
 
@@ -671,17 +666,15 @@ let aktifKullanici = null;
 let botMesajSayisi = 0;
 let chatHistory = [];
 
-// ===================== API İLE SENKRONİZASYON =====================
 async function initDB() {
     try {
         const res = await fetch(`${API_BASE}/db`, {
-            headers: { "x-token": SECURITY_TOKEN } // GÜVENLİK DUVARINI GEÇİŞ
+            headers: { "x-token": SECURITY_TOKEN }
         });
         
-        if (!res.ok) throw new Error("Erişim Engellendi veya Sunucu Yok");
+        if (!res.ok) throw new Error("Connection Refused");
         DB = await res.json();
         
-        // Eksik alanları tamamla
         if (!DB.kullanicilar) {
             DB.kullanicilar = [
                 { id: "admin", sifre: "Arda6307!", isim: "Sistem Yöneticisi", rol: "Süper Admin", dept: "Yönetim", tarih: "01.01.2025" },
@@ -700,8 +693,8 @@ async function initDB() {
         if (!DB.urunler) DB.urunler = [];
         isDBLoaded = true;
     } catch(e) {
-        console.error("Veritabanı çekilemedi", e);
-        toast("Sunucuya bağlanılamadı veya Güvenlik Duvarı engelledi!", "error");
+        console.error("DB Initialization Error:", e);
+        toast("Sunucuya bağlanılamadı!", "error");
     }
 }
 
@@ -716,13 +709,12 @@ async function saveDB() {
             body: JSON.stringify(DB)
         });
     } catch(e) {
-        console.error("Veri kaydedilemedi", e);
+        console.error("DB Sync Error:", e);
     }
 }
 
-// ===================== GİRİŞ =====================
 async function girisYap() {
-    if (!isDBLoaded) { toast("Veritabanı yükleniyor, lütfen bekleyin...", "warning"); return; }
+    if (!isDBLoaded) { toast("Veritabanı senkronize ediliyor...", "warning"); return; }
     
     const u = document.getElementById('login-username').value.trim().toLowerCase();
     const p = document.getElementById('login-password').value;
@@ -733,21 +725,17 @@ async function girisYap() {
         document.getElementById('active-user-name').innerText = kul.isim;
         document.getElementById('active-user-role').innerText = kul.rol;
         
-        // Menüleri bul
         const adminSecton = document.getElementById('admin-section');
         const menuKul = document.getElementById('menu-kullanicilar');
         const menuAyar = document.getElementById('menu-ayarlar');
-        const menuBot = document.getElementById('menu-bot'); // Bot menüsü
+        const menuBot = document.getElementById('menu-bot');
         
-        // YETKİ KONTROLÜ BAŞLIYOR
         if (kul.id === 'admin') {
-            // Adminse her şeyi göster
             if(adminSecton) adminSecton.style.display = ''; 
             if(menuKul) menuKul.style.display = ''; 
             if(menuAyar) menuAyar.style.display = '';
             if(menuBot) menuBot.style.display = ''; 
         } else {
-            // Normal personelse ayarları, kullanıcıları ve botu GİZLE
             if(adminSecton) adminSecton.style.display = 'none'; 
             if(menuKul) menuKul.style.display = 'none'; 
             if(menuAyar) menuAyar.style.display = 'none';
@@ -780,7 +768,6 @@ function cikisYap() {
     document.getElementById('login-password').value = '';
 }
 
-// ===================== SAYFA DEĞİŞTİR =====================
 function sayfaGoster(id) {
     document.querySelectorAll('.sayfa').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('#sidebar-nav a').forEach(a => {
@@ -796,7 +783,6 @@ function sayfaGoster(id) {
     return false;
 }
 
-// ===================== DASHBOARD =====================
 function dashboardGuncelle() {
     document.getElementById('neo-toplam-sip').innerText = DB.siparisler.length;
     document.getElementById('neo-wp-sip').innerText = DB.siparisler.filter(s => s.kaynak === 'WhatsApp Bot').length;
@@ -807,7 +793,6 @@ function dashboardGuncelle() {
     document.getElementById('neo-urunler').innerText = DB.urunler.length;
 }
 
-// ===================== SİPARİŞLER =====================
 async function siparisEkle() {
     const isim = document.getElementById('sip-isim').value.trim();
     const tel = document.getElementById('sip-tel').value.trim();
@@ -928,7 +913,6 @@ function siparisConfirmSil(id) {
     });
 }
 
-// ===================== ÜRÜNLER =====================
 function urunleriRender(liste) {
     const data = liste || DB.urunler;
     const grid = document.getElementById('urun-grid');
@@ -1020,7 +1004,6 @@ function siparisSiparisMOdalUrunDoldur() {
     sel.innerHTML = DB.urunler.map(u => `<option value="${u.id}">${u.isim} — ${u.fiyat}</option>`).join('');
 }
 
-// ===================== ŞİKAYETLER =====================
 async function sikayetEkle() {
     const isim = document.getElementById('sik-isim').value.trim();
     const tel = document.getElementById('sik-tel').value.trim();
@@ -1091,7 +1074,6 @@ function sikayetSil(id) {
     });
 }
 
-// ===================== KULLANICILAR =====================
 async function kullaniciEkle() {
     const isim = document.getElementById('kul-isim').value.trim();
     const username = document.getElementById('kul-username').value.trim().toLowerCase();
@@ -1145,7 +1127,6 @@ function kullaniciSil(id) {
     });
 }
 
-// ===================== API AYARLARI =====================
 async function apiAyarlariKaydet() {
     DB.ayarlar.apiKey = document.getElementById('api-key').value.trim();
     DB.ayarlar.wpPhoneId = document.getElementById('wp-phone-id').value.trim();
@@ -1163,7 +1144,6 @@ async function apiAyarlariKaydet() {
     document.getElementById('bot-model-text').innerText = DB.ayarlar.model || '—';
 }
 
-// ===================== SİSTEM PROMPTU =====================
 async function sistemPromptuGuncelle() {
     const urunListesi = DB.urunler.map(u => `- ${u.isim}: ${u.fiyat} (${u.aciklama})`).join('\n');
     const yeniPrompt = `Sen Prohummer şirketinin WhatsApp asistanısın.\nKonum: ${DB.ayarlar.konum}\n\nÜrünler:\n${urunListesi}\n\nKurallar:\n1. Müşteri ürün sorarsa kibarca yardımcı ol.\n2. Sipariş vermek isterse; ad, soyad, telefon numarası ve tam adresini tek tek iste.\n3. ÇOK ÖNEMLİ: Müşteri tüm bilgileri verip siparişi onayladığında, ona teşekkür et ve mesajının EN SONUNA mutlaka şu formatta gizli bir kayıt kodu ekle:\n[SIPARIS: Müşteri Adı Soyadı | Telefonu | Adresi | Aldığı Ürün]`;
@@ -1173,7 +1153,6 @@ async function sistemPromptuGuncelle() {
     toast(`Sistem promptu ${DB.urunler.length} ürünle güncellendi!`, 'success');
 }
 
-// ===================== WHATSAPP SİMÜLATÖRÜ =====================
 async function wpGonder() {
     const input = document.getElementById('wp-user-input');
     const msg = input.value.trim();
@@ -1241,7 +1220,6 @@ function chatTemizle() {
     document.getElementById('wp-chat-messages').innerHTML = `<div class="chat-bubble bubble-in">${DB.ayarlar.karsilama}</div>`;
 }
 
-// ===================== AYARLAR =====================
 async function sirketBilgileriKaydet() {
     DB.ayarlar.sirket = document.getElementById('sirket-isim').value;
     DB.ayarlar.konum = document.getElementById('sirket-konum').value;
@@ -1267,7 +1245,6 @@ function veriSifirlaConfirm() {
     });
 }
 
-// ===================== AKTİVİTE =====================
 async function aktiviteEkle(metin, renk) {
     const renkler = { orange:'var(--orange)', green:'var(--green)', red:'var(--red)', blue:'var(--blue)', yellow:'var(--yellow)', purple:'var(--purple)' };
     const r = renkler[renk] || 'var(--muted)';
@@ -1283,7 +1260,6 @@ async function aktiviteEkle(metin, renk) {
         </div>`).join('');
 }
 
-// ===================== YARDIMCILAR =====================
 function bugunTarih() {
     const d = new Date();
     return `${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}.${d.getFullYear()}`;
@@ -1331,7 +1307,6 @@ document.querySelectorAll('.modal-overlay').forEach(m => {
     m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); });
 });
 
-// ===================== INIT =====================
 window.addEventListener('DOMContentLoaded', async () => {
     await initDB();
     siparisSiparisMOdalUrunDoldur();
