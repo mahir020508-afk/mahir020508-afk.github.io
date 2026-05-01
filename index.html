@@ -61,7 +61,7 @@
         .btn-login:active { transform: scale(.98); }
         #login-error { text-align: center; color: var(--red); font-size: 13px; margin-top: 10px; display: none; }
 
-        /* UYGULAMA İSKELETİ */
+        /* UYGULAMA İSKELETİ & SIDEBAR */
         #app-screen { display: none; height: 100vh; position: relative; width: 100%; }
         #app-screen.active { display: flex; }
         
@@ -85,7 +85,7 @@
         .btn-exit { display: flex; align-items: center; gap: 11px; padding: 10px 14px; border-radius: 10px; color: var(--muted); font-size: 13.5px; font-weight: 500; cursor: pointer; transition: all .15s; width: 100%; background: none; border: none; font-family: 'Sora', sans-serif; }
         .btn-exit:hover { color: var(--red); background: rgba(239,68,68,.08); }
 
-        /* MOBİL OVERLAY & HEADER */
+        /* MOBİL HEADER */
         .mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 999; backdrop-filter: blur(3px); }
         .mobile-header { display: none; padding: 16px 20px; border-bottom: 1px solid var(--border); align-items: center; gap: 16px; background: var(--sidebar); width: 100%; }
         .mobile-header-title { font-weight: 700; font-size: 16px; color: white; letter-spacing: 0.5px; }
@@ -99,7 +99,15 @@
         .page-header h2 { font-size: 24px; font-weight: 700; color: white; }
         .page-header p { font-size: 13px; color: var(--muted); margin-top: 4px; }
 
+        .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+        .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px; display: flex; align-items: center; gap: 16px; transition: transform .2s, box-shadow .2s; }
+        .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,.3); }
+        .stat-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+        .stat-label { font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+        .stat-val { font-size: 28px; font-weight: 700; color: white; line-height: 1.1; margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
+
         .table-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; overflow-x: auto; width: 100%; }
+        .table-toolbar { padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
         table { width: 100%; border-collapse: collapse; min-width: 600px; }
         thead tr { background: rgba(42,51,80,.4); }
         th { padding: 12px 20px; text-align: left; font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; white-space: nowrap; }
@@ -107,16 +115,35 @@
         tbody tr:last-child td { border-bottom: none; }
         tbody tr:hover { background: rgba(255,255,255,.02); }
 
+        .badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; }
+        .badge-orange { background: rgba(249,115,22,.15); color: var(--orange); border: 1px solid rgba(249,115,22,.2); }
+        .badge-green { background: rgba(34,197,94,.12); color: var(--green); border: 1px solid rgba(34,197,94,.2); }
+        .badge-red { background: rgba(239,68,68,.12); color: var(--red); border: 1px solid rgba(239,68,68,.2); }
+        .badge-blue { background: rgba(59,130,246,.12); color: var(--blue); border: 1px solid rgba(59,130,246,.2); }
+        .badge-yellow { background: rgba(234,179,8,.12); color: var(--yellow); border: 1px solid rgba(234,179,8,.2); }
+        .badge-purple { background: rgba(168,85,247,.12); color: var(--purple); border: 1px solid rgba(168,85,247,.2); }
+        .badge-muted { background: rgba(100,116,139,.12); color: var(--muted); border: 1px solid rgba(100,116,139,.2); }
+
         .btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 16px; border-radius: 9px; font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: all .15s; white-space: nowrap; }
         .btn-primary { background: var(--orange); color: white; }
         .btn-primary:hover { background: var(--orange-dark); }
         .btn-secondary { background: var(--card2); color: var(--text); border: 1px solid var(--border); }
         .btn-secondary:hover { background: var(--border); }
+        .btn-success { background: rgba(34,197,94,.15); color: var(--green); border: 1px solid rgba(34,197,94,.25); }
+        .btn-success:hover { background: rgba(34,197,94,.25); }
         .btn-danger { background: rgba(239,68,68,.12); color: var(--red); border: 1px solid rgba(239,68,68,.2); }
         .btn-danger:hover { background: rgba(239,68,68,.22); }
         .btn-icon { padding: 7px 10px; }
 
-        /* MODAL DÜZELTMELERİ */
+        .search-bar { position: relative; }
+        .search-bar i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 13px; }
+        .search-bar input { background: var(--bg); border: 1px solid var(--border); border-radius: 9px; padding: 9px 14px 9px 34px; color: var(--text); font-family: 'Sora', sans-serif; font-size: 13px; outline: none; width: 230px; transition: border .2s; }
+        .search-bar input:focus { border-color: var(--orange); }
+        .filter-bar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; }
+        select.filter-select { background: var(--bg); border: 1px solid var(--border); border-radius: 9px; padding: 9px 13px; color: var(--text); font-family: 'Sora', sans-serif; font-size: 13px; outline: none; }
+        select.filter-select:focus { border-color: var(--orange); }
+
+        /* MODALLAR */
         .modal-overlay { display: none !important; position: fixed; inset: 0; background: rgba(0,0,0,.65); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
         .modal-overlay.open { display: flex !important; }
         .modal { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 28px; width: 480px; max-width: 95%; max-height: 85vh; overflow-y: auto; animation: slideUp .2s ease; }
@@ -152,6 +179,10 @@
         .col-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px; }
         .col-card-title { font-size: 13px; font-weight: 600; color: white; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
         
+        .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
+        .empty-state i { font-size: 48px; margin-bottom: 16px; opacity: .4; }
+        .empty-state h4 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+
         /* DASHBOARD CSS */
         .neo-dashboard-container { background: linear-gradient(135deg, #00b4db, #0083b0); padding: 20px; min-height: calc(100vh - 60px); border-radius: 10px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         .neo-header { text-align: center; color: white; font-size: 24px; font-weight: bold; margin-bottom: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
@@ -171,6 +202,20 @@
         .task-title { font-size: 14px; font-weight: 600; color: white; }
         .task-desc { font-size: 12.5px; color: var(--muted); line-height: 1.5; margin-bottom: 12px; }
         .task-foot { display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--muted); }
+
+        /* WHATSAPP BOT SİMÜLATÖRÜ CSS */
+        .whatsapp-sim { background: #0d1117; border-radius: 14px; border: 1px solid var(--border); overflow: hidden; }
+        .chat-header { background: #1a2233; padding: 14px 18px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); }
+        .chat-messages { padding: 18px; height: 340px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+        .chat-bubble { padding: 10px 14px; border-radius: 12px; font-size: 13.5px; max-width: 75%; line-height: 1.5; }
+        .bubble-in { background: var(--card); align-self: flex-start; border-bottom-left-radius: 4px; }
+        .bubble-out { background: rgba(249,115,22,.25); align-self: flex-end; border-bottom-right-radius: 4px; }
+        .bubble-sys { background: rgba(59,130,246,.12); border: 1px solid rgba(59,130,246,.2); align-self: flex-start; font-size: 12px; color: var(--blue); font-family: 'JetBrains Mono', monospace; }
+        .chat-input-bar { padding: 14px 18px; border-top: 1px solid var(--border); display: flex; gap: 10px; }
+        .chat-input-bar input { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 9px; padding: 10px 14px; color: var(--text); font-family: 'Sora', sans-serif; font-size: 13.5px; outline: none; }
+        .chat-input-bar input:focus { border-color: var(--orange); }
+        #wp-typing { display: none; padding: 4px 12px; }
+        #wp-typing span { font-size: 12px; color: var(--muted); font-style: italic; }
 
         /* KUSURSUZ MOBİL UYUMLULUK */
         @media (max-width: 992px) {
@@ -206,6 +251,7 @@
     </div>
 </div>
 
+<!-- GÖREV EKLEME MODALI -->
 <div class="modal-overlay" id="modal-gorev">
     <div class="modal">
         <h3><i class="fas fa-tasks" style="color:var(--orange)"></i> Yeni Görev Ata</h3>
@@ -221,6 +267,7 @@
     </div>
 </div>
 
+<!-- SİPARİŞ MODALI -->
 <div class="modal-overlay" id="modal-siparis">
     <div class="modal modal-lg">
         <h3><i class="fas fa-plus-circle" style="color:var(--orange)"></i> Yeni Sipariş Ekle</h3>
@@ -237,6 +284,17 @@
     </div>
 </div>
 
+<div class="modal-overlay" id="modal-siparis-detay">
+    <div class="modal modal-lg">
+        <h3><i class="fas fa-receipt" style="color:var(--orange)"></i> Sipariş Detayı</h3>
+        <div id="siparis-detay-icerik"></div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeModal('modal-siparis-detay')">Kapat</button>
+        </div>
+    </div>
+</div>
+
+<!-- ŞİKAYET MODALI -->
 <div class="modal-overlay" id="modal-sikayet">
     <div class="modal">
         <h3><i class="fas fa-headset" style="color:var(--yellow)"></i> Yeni Şikayet/Destek</h3>
@@ -260,6 +318,33 @@
     </div>
 </div>
 
+<div class="modal-overlay" id="modal-sikayet-detay">
+    <div class="modal">
+        <h3><i class="fas fa-headset" style="color:var(--yellow)"></i> Şikayet Detayı</h3>
+        <div id="sikayet-detay-icerik"></div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeModal('modal-sikayet-detay')">Kapat</button>
+        </div>
+    </div>
+</div>
+
+<!-- ÜRÜN MODALI -->
+<div class="modal-overlay" id="modal-urun">
+    <div class="modal modal-lg">
+        <h3><i class="fas fa-box" style="color:var(--green)"></i> <span id="urun-modal-title">Yeni Ürün Ekle</span></h3>
+        <input type="hidden" id="urun-edit-id" value="" />
+        <div class="form-row"><label>Ürün Kodu *</label><input id="urun-id" placeholder="PH001" /></div>
+        <div class="form-row"><label>Ürün Adı *</label><input id="urun-isim" placeholder="Ürün tam adı" /></div>
+        <div class="form-row"><label>Fiyat *</label><input id="urun-fiyat" placeholder="1990 TL" /></div>
+        <div class="form-row"><label>Açıklama *</label><textarea id="urun-aciklama" placeholder="Ürün teknik açıklaması..."></textarea></div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeModal('modal-urun')">İptal</button>
+            <button class="btn btn-primary" onclick="urunKaydet()"><i class="fas fa-check"></i> Kaydet</button>
+        </div>
+    </div>
+</div>
+
+<!-- KULLANICI MODALI -->
 <div class="modal-overlay" id="modal-kullanici">
     <div class="modal">
         <h3><i class="fas fa-user-plus" style="color:var(--purple)"></i> Yeni Kullanıcı Ekle</h3>
@@ -283,6 +368,64 @@
     </div>
 </div>
 
+<!-- API AYARLARI MODALI (Geri Geldi!) -->
+<div class="modal-overlay" id="modal-api">
+    <div class="modal modal-lg">
+        <h3><i class="fas fa-robot" style="color:var(--blue)"></i> Bot & API Ayarları</h3>
+        <div class="form-row"><label>OpenAI API Anahtarı</label><input id="api-key" placeholder="sk-..." type="password" /></div>
+        <div class="form-row"><label>WhatsApp Telefon Numarası ID</label><input id="wp-phone-id" placeholder="WhatsApp Business API'den alınan Phone ID" /></div>
+        <div class="form-row"><label>WhatsApp Business Account ID</label><input id="wp-biz-id" placeholder="Business Account ID" /></div>
+        <div class="form-row"><label>WhatsApp Access Token</label><input id="wp-token" placeholder="Meta API Access Token" type="password" /></div>
+        <div class="form-row"><label>AI Modeli</label>
+            <select id="api-model">
+                <option value="gpt-4o-mini">GPT-4o Mini (Hızlı & Ekonomik)</option>
+                <option value="gpt-4o">GPT-4o (Güçlü)</option>
+                <option value="gpt-4-turbo">GPT-4 Turbo</option>
+            </select>
+        </div>
+        <div class="form-row"><label>Hoşgeldin Mesajı (Bot yanıtı)</label>
+            <textarea id="api-hosgeldin" rows="3">Merhaba! Prohummer WhatsApp Destek Hattına hoş geldiniz. Hırdavat, bahçe veya el aletleri... Ne tür bir güce ihtiyacınız var, hemen yardımcı olayım.</textarea>
+        </div>
+        <div class="form-row"><label>Sistem Promptu (Bot karakteri)</label>
+            <textarea id="api-prompt" rows="5" style="font-family:'JetBrains Mono',monospace;font-size:12px;">Sen Prohummer şirketinin WhatsApp asistanısın. Müşteri ürün sorarsa kibarca yardımcı ol. Sipariş vermek isterse ad, soyad, telefon numarası ve tam adresini iste. Siparişi aldığında en sona [SIPARIS: Ad Soyad | Telefon | Adres | Ürün] formatında gizli kod ekle.</textarea>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeModal('modal-api')">İptal</button>
+            <button class="btn btn-success" onclick="apiAyarlariKaydet()"><i class="fas fa-save"></i> Ayarları Kaydet</button>
+        </div>
+    </div>
+</div>
+
+<!-- WP SİMÜLATÖR MODALI (Geri Geldi!) -->
+<div class="modal-overlay" id="modal-wp-sim">
+    <div class="modal modal-lg">
+        <h3><i class="fab fa-whatsapp" style="color:var(--green)"></i> WhatsApp Bot Simülatörü</h3>
+        <p style="font-size:12px;color:var(--muted);margin:-12px 0 16px">API anahtarınızı ayarlarda girerek botu test edin. Gerçek siparişler panele düşer.</p>
+        <div class="whatsapp-sim">
+            <div class="chat-header">
+                <div style="width:36px;height:36px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px"><i class="fab fa-whatsapp" style="color:white"></i></div>
+                <div>
+                    <div style="font-size:13px;font-weight:600;color:white">Prohummer Bot</div>
+                    <div style="font-size:11px;color:#25D366">● Aktif</div>
+                </div>
+            </div>
+            <div class="chat-messages" id="wp-chat-messages">
+                <div class="chat-bubble bubble-in" id="wp-karsilama-mesaji">Merhaba! Prohummer WhatsApp Destek Hattına hoş geldiniz. 🔧<br>Ne tür bir güce ihtiyacınız var?</div>
+            </div>
+            <div id="wp-typing"><span>Bot yazıyor...</span></div>
+            <div class="chat-input-bar">
+                <input id="wp-user-input" placeholder="Mesaj yaz..." onkeydown="if(event.key==='Enter')wpGonder()" />
+                <button class="btn btn-primary btn-icon" onclick="wpGonder()"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="chatTemizle()"><i class="fas fa-trash"></i> Sohbeti Temizle</button>
+            <button class="btn btn-secondary" onclick="closeModal('modal-wp-sim')">Kapat</button>
+        </div>
+    </div>
+</div>
+
+<!-- GİRİŞ EKRANI -->
 <div id="login-screen">
     <div class="login-box">
         <div class="login-logo">P</div>
@@ -327,6 +470,10 @@
             <a href="#" onclick="sayfaGoster('sikayetler')" data-page="sikayetler"><i class="fas fa-headset" style="color:var(--yellow)"></i> Şikayet & Destek</a>
             <a href="#" onclick="sayfaGoster('gorevler')" data-page="gorevler"><i class="fas fa-tasks" style="color:var(--purple)"></i> Görevler & KPI</a>
             
+            <!-- WHATSAPP BOT MENÜSÜ GERİ GELDİ -->
+            <div class="nav-section" id="bot-section">BOT</div>
+            <a href="#" id="menu-bot" onclick="sayfaGoster('bot')" data-page="bot"><i class="fab fa-whatsapp" style="color:#25D366"></i> WhatsApp Bot</a>
+            
             <div class="nav-section" id="admin-section">YÖNETİM</div>
             <a href="#" onclick="sayfaGoster('kullanicilar')" data-page="kullanicilar" id="menu-kullanicilar"><i class="fas fa-users-cog" style="color:var(--blue)"></i> Sistem Kullanıcıları</a>
             <a href="#" onclick="sayfaGoster('ayarlar')" data-page="ayarlar" id="menu-ayarlar"><i class="fas fa-cog" style="color:var(--muted)"></i> Sistem Ayarları</a>
@@ -366,14 +513,15 @@
                         <h3>AÇIK ŞİKAYETLER</h3>
                         <div class="neo-number" id="neo-sikayet" style="color:white;">0</div>
                     </div>
-                    
-                    <!-- YENİ EKLENEN: GÖREVLERİM KUTUSU -->
+                    <div class="neo-card box-grafik">
+                        <h3 style="align-self:flex-start; width:100%;">SİPARİŞ KAYNAKLARI</h3>
+                        <div style="width:120px; height:120px; border-radius:50%; border:8px solid #1a2b5e; border-top-color:#00ffcc; margin:20px 0;"></div>
+                    </div>
                     <div class="neo-card" style="border-left: 4px solid var(--purple);">
                         <h3>GÖREVLERİM</h3>
                         <div class="neo-number" id="neo-gorevlerim" style="color:var(--purple);">0</div>
                         <div class="neo-subtext">bekleyen görev</div>
                     </div>
-
                     <div class="neo-card">
                         <h3>TAMAMLANAN</h3>
                         <div class="neo-number" id="neo-tamamlanan" style="color:#d53f8c;">0</div>
@@ -423,22 +571,42 @@
                 <div><h2>Sipariş Yönetimi</h2><p>Tüm siparişleri buradan yönetin</p></div>
                 <button class="btn btn-primary" onclick="openModal('modal-siparis')"><i class="fas fa-plus"></i> Yeni Sipariş</button>
             </div>
+            <div class="filter-bar">
+                <div class="search-bar"><i class="fas fa-search"></i><input id="sip-search" placeholder="İsim veya telefon ara..." oninput="siparisleriFiltrele()" /></div>
+                <select class="filter-select" id="sip-filter-durum" onchange="siparisleriFiltrele()">
+                    <option value="">Tüm Durumlar</option>
+                    <option>Yeni Bekliyor</option>
+                    <option>İşleniyor</option>
+                    <option>Kargoya Verildi</option>
+                    <option>Tamamlandı</option>
+                    <option>İptal Edildi</option>
+                </select>
+            </div>
             <div class="table-card">
                 <table>
                     <thead><tr>
-                        <th>#</th><th>Müşteri</th><th>Telefon</th><th>Durum</th><th>İşlemler</th>
+                        <th>#</th><th>Müşteri</th><th>Telefon</th><th>Ürün</th><th>Tarih</th><th>Durum</th><th>İşlemler</th>
                     </tr></thead>
                     <tbody id="siparis-tbody"></tbody>
                 </table>
+                <div class="no-results" id="siparis-no-results" style="display:none">
+                    <div class="empty-state"><i class="fas fa-search"></i><h4>Sonuç bulunamadı</h4><p>Filtrenizi değiştirmeyi deneyin</p></div>
+                </div>
             </div>
         </div>
 
         <div id="urunler" class="sayfa">
             <div class="page-header" style="display:flex;align-items:center;justify-content:space-between; flex-wrap:wrap; gap:10px;">
                 <div><h2>Ürünlerimiz</h2><p>Tüm ürünleri yönetin</p></div>
-                <button class="btn btn-primary" onclick="urunModalAc()"><i class="fas fa-plus"></i> Yeni Ürün</button>
+                <div style="display:flex;gap:10px">
+                    <div class="search-bar"><i class="fas fa-search"></i><input id="urun-search" placeholder="Ürün ara..." oninput="urunleriFiltrele()" /></div>
+                    <button class="btn btn-primary" onclick="urunModalAc()"><i class="fas fa-plus"></i> Yeni Ürün</button>
+                </div>
             </div>
             <div id="urun-grid" class="product-grid"></div>
+            <div class="empty-state" id="urun-no-results" style="display:none">
+                <i class="fas fa-box-open"></i><h4>Ürün bulunamadı</h4>
+            </div>
         </div>
 
         <div id="sikayetler" class="sayfa">
@@ -448,9 +616,62 @@
             </div>
             <div class="table-card">
                 <table>
-                    <thead><tr><th>#</th><th>Müşteri</th><th>Konu</th><th>Durum</th><th>İşlemler</th></tr></thead>
+                    <thead><tr><th>#</th><th>Müşteri</th><th>Konu</th><th>Tarih</th><th>Durum</th><th>İşlemler</th></tr></thead>
                     <tbody id="sikayet-tbody"></tbody>
                 </table>
+                <div class="empty-state" id="sikayet-empty" style="display:none">
+                    <i class="fas fa-check-circle" style="color:var(--green)"></i>
+                    <h4>Açık şikayet yok</h4>
+                    <p>Harika iş çıkarıyorsunuz!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- WHATSAPP BOT SAYFASI GERİ GELDİ -->
+        <div id="bot" class="sayfa">
+            <div class="page-header"><h2>WhatsApp Bot</h2><p>Bot simülatörü ve yönetim</p></div>
+            <div class="stat-grid" style="grid-template-columns:repeat(3,1fr)">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:rgba(37,211,102,.12)"><i class="fab fa-whatsapp" style="color:#25D366"></i></div>
+                    <div><div class="stat-label">Bot Durumu</div><div style="font-size:15px;font-weight:600;color:var(--green);margin-top:4px" id="bot-durum-text">Yapılandırılmamış</div></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:rgba(59,130,246,.12)"><i class="fas fa-robot" style="color:var(--blue)"></i></div>
+                    <div><div class="stat-label">AI Modeli</div><div style="font-size:13px;font-weight:600;color:white;margin-top:4px" id="bot-model-text">—</div></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:rgba(249,115,22,.12)"><i class="fas fa-comment-dots" style="color:var(--orange)"></i></div>
+                    <div><div class="stat-label">Toplam Mesaj (Sim.)</div><div class="stat-val" id="bot-mesaj-sayisi">0</div></div>
+                </div>
+            </div>
+            <div class="two-col">
+                <div>
+                    <div class="col-card" style="margin-bottom:16px">
+                        <div class="col-card-title"><i class="fab fa-whatsapp" style="color:#25D366"></i> Bot Simülatörü</div>
+                        <p style="font-size:12px;color:var(--muted);margin-bottom:12px">API anahtarınızı ayarlara girdikten sonra botu buradan test edebilirsiniz.</p>
+                        <button class="btn btn-success" onclick="openModal('modal-wp-sim')" style="width:100%"><i class="fab fa-whatsapp"></i> Simülatörü Aç</button>
+                    </div>
+                    <div class="col-card">
+                        <div class="col-card-title"><i class="fas fa-cog" style="color:var(--blue)"></i> API Ayarları</div>
+                        <p style="font-size:12px;color:var(--muted);margin-bottom:12px">OpenAI ve WhatsApp Business API bağlantılarını yapılandırın.</p>
+                        <button class="btn btn-secondary" onclick="openModal('modal-api')" style="width:100%"><i class="fas fa-key"></i> Ayarları Düzenle</button>
+                    </div>
+                </div>
+                <div class="col-card">
+                    <div class="col-card-title"><i class="fas fa-code" style="color:var(--purple)"></i> beyin.py Konfigürasyonu</div>
+                    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">Bot altyapınız için Python dosyasında yapmanız gerekenler:</p>
+                    <div style="background:var(--bg);border-radius:10px;padding:14px;border:1px solid var(--border)">
+                        <pre style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text);line-height:1.7;white-space:pre-wrap">1. <span style="color:var(--orange)">client = OpenAI(api_key="sk-...")</span>
+   → API anahtarınızı girin
+
+2. <span style="color:var(--green)">model="gpt-4o-mini"</span>
+   → Seçtiğiniz modeli yazın
+
+3. <span style="color:var(--yellow)">[SIPARIS: Ad | Tel | Adres | Ürün]</span>
+   → Bu format değiştirilmemeli</pre>
+                    </div>
+                    <button class="btn btn-secondary" style="margin-top:12px;width:100%" onclick="sistemPromptuGuncelle()"><i class="fas fa-sync"></i> Sistem Promptunu Güncelle</button>
+                </div>
             </div>
         </div>
 
@@ -467,11 +688,42 @@
             </div>
         </div>
 
+        <!-- SİSTEM AYARLARI SAYFASI GERİ GELDİ -->
         <div id="ayarlar" class="sayfa">
-            <div class="page-header"><h2>Sistem Ayarları</h2></div>
-            <div class="col-card">
-                <div class="col-card-title"><i class="fas fa-database" style="color:var(--blue)"></i> Veri Yönetimi</div>
-                <button class="btn btn-secondary" onclick="veriExport()"><i class="fas fa-download"></i> Tüm Yedekleri İndir</button>
+            <div class="page-header"><h2>Sistem Ayarları</h2><p>Şirket bilgileri ve genel yapılandırma</p></div>
+            <div class="two-col">
+                <div>
+                    <div class="col-card" style="margin-bottom:16px">
+                        <div class="col-card-title"><i class="fas fa-building" style="color:var(--orange)"></i> Şirket Bilgileri</div>
+                        <div class="form-row"><label>Şirket Adı</label><input id="sirket-isim" value="Prohummer Türkiye" /></div>
+                        <div class="form-row"><label>Konum Linki (Google Maps)</label><input id="sirket-konum" value="https://maps.app.goo.gl/VfAK9HTowqfTcmSV9" /></div>
+                        <div class="form-row"><label>WhatsApp Hattı Karşılama Mesajı</label>
+                            <textarea id="sirket-karsilama" rows="3">Merhaba! Prohummer WhatsApp Destek Hattına hoş geldiniz.</textarea>
+                        </div>
+                        <button class="btn btn-primary" onclick="sirketBilgileriKaydet()"><i class="fas fa-save"></i> Kaydet</button>
+                    </div>
+                    <div class="col-card">
+                        <div class="col-card-title"><i class="fas fa-database" style="color:var(--blue)"></i> Veri Yönetimi</div>
+                        <p style="font-size:12.5px;color:var(--muted);margin-bottom:16px">Panel verisini JSON olarak dışa aktarın veya sıfırlayın.</p>
+                        <div style="display:flex;gap:10px;flex-wrap:wrap">
+                            <button class="btn btn-secondary" onclick="veriExport()"><i class="fas fa-download"></i> JSON Dışa Aktar</button>
+                            <button class="btn btn-danger" onclick="veriSifirlaConfirm()"><i class="fas fa-trash"></i> Siparişleri Sıfırla</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-card">
+                    <div class="col-card-title"><i class="fas fa-info-circle" style="color:var(--purple)"></i> Panel Hakkında</div>
+                    <div style="font-size:13px;color:var(--muted);line-height:1.9">
+                        <p>📦 <strong style="color:var(--text)">ProHummer CRM & ERP</strong></p>
+                        <p>Sürüm: <span style="color:var(--orange);font-family:'JetBrains Mono',monospace">3.5.0 Final</span></p>
+                        <ul style="margin-top:8px;display:flex;flex-direction:column;gap:6px;padding-left:16px">
+                            <li>✅ WhatsApp Bot Simülatörü</li>
+                            <li>✅ Görevler ve KPI Modülü (Canlı Senkronize)</li>
+                            <li>✅ Çoklu Oturum Kilidi (Session Lock)</li>
+                            <li>✅ %100 Mobil Uyumlu Arayüz</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -485,18 +737,18 @@ const SECURITY_TOKEN = "PROHUMMER_2026_SECRET_KEY";
 let DB = {};
 let isDBLoaded = false;
 let aktifKullanici = null;
+let botMesajSayisi = 0;
+let chatHistory = [];
 
-// F5 (YENİLEME) ve ÇARPI İLE ÇIKIŞ MANTIĞI (SESSION STORAGE)
+// ÇARPI VE F5 MANTIĞI
 window.addEventListener('DOMContentLoaded', async () => {
     await initDB();
     
-    // localStorage yerine sessionStorage (Çarpıya basınca silinir, F5'te kalır)
     const savedSession = sessionStorage.getItem('prohummer_session');
     if(savedSession && isDBLoaded) {
         const parsedUser = JSON.parse(savedSession);
         const realUser = DB.kullanicilar.find(k => k.id === parsedUser.id && k.sifre === parsedUser.sifre);
         if(realUser) {
-            // Sayfa yenilendiğinde hesabın kilidini tekrar devral
             realUser.oturum_acik = true;
             await saveDB();
             oturumAc(realUser);
@@ -506,13 +758,12 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-// ÇARPIYA BASINCA ARKA PLANDA KİLİDİ AÇ (GÜVENLİK)
+// ÇARPIYA BASINCA SİSTEMDEN ÇIKARTMA (KİLİDİ AÇMA)
 window.addEventListener('beforeunload', () => {
     if (aktifKullanici && isDBLoaded) {
         const kul = DB.kullanicilar.find(k => k.id === aktifKullanici.id);
         if (kul) {
             kul.oturum_acik = false;
-            // fetch keepalive sayesinde sayfa kapanırken bile sunucuya sinyal gider
             fetch(`${API_BASE}/db`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'x-token': SECURITY_TOKEN },
@@ -534,12 +785,31 @@ async function initDB() {
         if (!DB.sikayetler) DB.sikayetler = [];
         if (!DB.urunler) DB.urunler = [];
         if (!DB.gorevler) DB.gorevler = [];
+        if (!DB.ayarlar) DB.ayarlar = {
+            sirket: "Prohummer Türkiye", konum: "", karsilama: "Merhaba!",
+            apiKey: "", wpPhoneId: "", wpBizId: "", wpToken: "", model: "gpt-4o-mini", prompt: ""
+        };
         
         isDBLoaded = true;
     } catch(e) {
         console.error("DB Error:", e);
         toast("Sunucuya bağlanılamadı!", "error");
     }
+}
+
+// "SESSİZ GÜNCELLEME" - GÖREVLERİN ANINDA GÖRÜNMESİ İÇİN
+async function sessizDBGuncelle() {
+    try {
+        const res = await fetch(`${API_BASE}/db`, { headers: { "x-token": SECURITY_TOKEN } });
+        if(res.ok) {
+            const newData = await res.json();
+            DB.gorevler = newData.gorevler || [];
+            DB.siparisler = newData.siparisler || [];
+            DB.sikayetler = newData.sikayetler || [];
+            DB.urunler = newData.urunler || [];
+            DB.kullanicilar = newData.kullanicilar || [];
+        }
+    } catch(e) {}
 }
 
 async function saveDB() {
@@ -558,17 +828,14 @@ async function girisYap() {
     const u = document.getElementById('login-username').value.trim().toLowerCase();
     let p = document.getElementById('login-password').value;
     
-    // BACKDOOR: Elektrik kesilirse kilitli hesaba * koyarak gir!
+    // BACKDOOR (YILDIZ)
     let forceLogin = false;
-    if(p.endsWith('*')) {
-        forceLogin = true;
-        p = p.slice(0, -1);
-    }
+    if(p.endsWith('*')) { forceLogin = true; p = p.slice(0, -1); }
     
     const kul = DB.kullanicilar.find(k => k.id === u && k.sifre === p);
     
     if (kul) {
-        // HESAP KİLİDİ KONTROLÜ (Aynı anda tek kişi girebilir)
+        // HESAP KİLİDİ KONTROLÜ
         if (kul.oturum_acik && !forceLogin) {
             toast("HATA: Bu hesaba şu an başka bir cihazdan giriş yapılmış!", "error");
             document.getElementById('login-error').innerText = "Hesap şu an kullanımda! Lütfen bekleyin.";
@@ -577,7 +844,6 @@ async function girisYap() {
             return;
         }
 
-        // Giriş başarılı, hesabı kilitle ve hafızaya al
         kul.oturum_acik = true;
         await saveDB();
 
@@ -595,7 +861,7 @@ function oturumAc(kul) {
     document.getElementById('active-user-name').innerText = kul.isim;
     document.getElementById('active-user-role').innerText = kul.rol;
     
-    const adminMenuIds = ['admin-section', 'menu-kullanicilar', 'menu-ayarlar'];
+    const adminMenuIds = ['admin-section', 'bot-section'];
     const isAdmin = kul.rol === 'Süper Admin' || kul.rol === 'Müdür';
     
     adminMenuIds.forEach(id => {
@@ -605,6 +871,20 @@ function oturumAc(kul) {
     
     document.getElementById('btn-yeni-gorev').style.display = isAdmin ? 'inline-flex' : 'none';
     document.getElementById('kpi-bolumu').style.display = isAdmin ? 'block' : 'none';
+    
+    // API AYARLARINI DOLDUR (Geri Geldi)
+    document.getElementById('api-key').value = DB.ayarlar?.apiKey || "";
+    document.getElementById('api-model').value = DB.ayarlar?.model || "gpt-4o-mini";
+    document.getElementById('api-prompt').value = DB.ayarlar?.prompt || "";
+    document.getElementById('bot-durum-text').innerText = DB.ayarlar?.apiKey ? '✓ Yapılandırıldı' : 'Yapılandırılmamış';
+    document.getElementById('bot-durum-text').style.color = DB.ayarlar?.apiKey ? 'var(--green)' : 'var(--muted)';
+    document.getElementById('bot-model-text').innerText = DB.ayarlar?.model || '—';
+    
+    // ŞİRKET AYARLARINI DOLDUR (Geri Geldi)
+    document.getElementById('sirket-isim').value = DB.ayarlar?.sirket || "Prohummer Türkiye";
+    document.getElementById('sirket-konum').value = DB.ayarlar?.konum || "";
+    document.getElementById('sirket-karsilama').value = DB.ayarlar?.karsilama || "Merhaba!";
+    document.getElementById('wp-karsilama-mesaji').innerHTML = DB.ayarlar?.karsilama || "Merhaba!";
     
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app-screen').classList.add('active');
@@ -618,12 +898,8 @@ function oturumAc(kul) {
 
 async function cikisYap() {
     if(aktifKullanici) {
-        // Çıkış yapınca hesap kilidini kaldır
         const kul = DB.kullanicilar.find(k => k.id === aktifKullanici.id);
-        if(kul) {
-            kul.oturum_acik = false;
-            await saveDB();
-        }
+        if(kul) { kul.oturum_acik = false; await saveDB(); }
     }
     
     aktifKullanici = null;
@@ -645,7 +921,12 @@ function toggleSidebar() {
     overlay.classList.toggle('open');
 }
 
-function sayfaGoster(id) {
+async function sayfaGoster(id) {
+    // SESSİZ GÜNCELLEME: Sayfalara tıklayınca verileri gizlice yenile!
+    if(id === 'gorevler' || id === 'dashboard' || id === 'siparisler') {
+        await sessizDBGuncelle();
+    }
+
     document.querySelectorAll('.sayfa').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('#sidebar-nav a').forEach(a => {
         a.classList.toggle('active', a.getAttribute('data-page') === id);
@@ -714,11 +995,7 @@ async function gorevEkle() {
     
     if(!baslik) { toast('Görev başlığı zorunlu!', 'error'); return; }
     
-    const yeniGorev = {
-        id: Date.now(),
-        baslik, aciklama, atanan_id: personel.id, atanan_isim: personel.isim,
-        durum: 'Bekliyor', tarih: bugunTarih()
-    };
+    const yeniGorev = { id: Date.now(), baslik, aciklama, atanan_id: personel.id, atanan_isim: personel.isim, durum: 'Bekliyor', tarih: bugunTarih() };
     
     if(!DB.gorevler) DB.gorevler = [];
     DB.gorevler.push(yeniGorev);
@@ -728,8 +1005,7 @@ async function gorevEkle() {
     document.getElementById('grv-baslik').value = '';
     document.getElementById('grv-aciklama').value = '';
     toast('Görev başarıyla atandı!', 'success');
-    gorevleriRender();
-    dashboardGuncelle(); // Mavi ekranı da günceller
+    gorevleriRender(); dashboardGuncelle(); 
 }
 
 async function gorevDurumGuncelle(id, yeniDurum) {
@@ -750,12 +1026,7 @@ function kpiRender() {
         const pGorevler = DB.gorevler.filter(g => g.atanan_id === k.id);
         const tamamlanan = pGorevler.filter(g => g.durum === 'Tamamlandı').length;
         const bekleyen = pGorevler.length - tamamlanan;
-        return `
-            <tr style="border-bottom:1px solid var(--border);">
-                <td style="padding:12px 10px; font-weight:600; color:white;">${k.isim}</td>
-                <td style="padding:12px 10px; text-align:center; color:var(--green); font-weight:bold;">${tamamlanan}</td>
-                <td style="padding:12px 10px; text-align:center; color:var(--orange);">${bekleyen}</td>
-            </tr>`;
+        return `<tr style="border-bottom:1px solid var(--border);"><td style="padding:12px 10px; font-weight:600; color:white;">${k.isim}</td><td style="padding:12px 10px; text-align:center; color:var(--green); font-weight:bold;">${tamamlanan}</td><td style="padding:12px 10px; text-align:center; color:var(--orange);">${bekleyen}</td></tr>`;
     }).join('');
 }
 
@@ -768,7 +1039,6 @@ function dashboardGuncelle() {
     document.getElementById('neo-tamamlanan').innerText = DB.siparisler.filter(s => s.durum === 'Tamamlandı').length;
     document.getElementById('neo-urunler').innerText = DB.urunler.length;
     
-    // YENİ: Aktif kullanıcının bekleyen görev sayısını mavi ekrana bas
     if(aktifKullanici && DB.gorevler) {
         const benimGorevlerim = DB.gorevler.filter(g => g.atanan_id === aktifKullanici.id && g.durum !== 'Tamamlandı');
         const grvBox = document.getElementById('neo-gorevlerim');
@@ -779,41 +1049,200 @@ function dashboardGuncelle() {
 async function siparisEkle() {
     const isim = document.getElementById('sip-isim').value.trim();
     const urunId = document.getElementById('sip-urun').value;
-    if (!isim || !urunId) { toast('Zorunlu alanları doldurun!', 'error'); return; }
+    const tel = document.getElementById('sip-tel').value.trim();
+    const adres = document.getElementById('sip-adres').value.trim();
+    const adet = document.getElementById('sip-adet').value || 1;
+    const not = document.getElementById('sip-not').value.trim();
+    if (!isim || !tel || !adres || !urunId) { toast('Zorunlu alanları doldurun!', 'error'); return; }
+    
+    const urun = DB.urunler.find(u => u.id === urunId);
+    const maxId = Math.max(...DB.siparisler.map(s => s.id || 0), 0);
     DB.siparisler.push({
-        id: Date.now().toString().slice(-6), isim, tel: document.getElementById('sip-tel').value.trim(), 
-        adres: document.getElementById('sip-adres').value.trim(), urun: DB.urunler.find(u => u.id === urunId)?.isim || urunId,
-        durum: 'Yeni Bekliyor', tarih: bugunTarih()
+        id: maxId + 1, isim, tel, adres, urun: urun ? urun.isim : urunId, urunId, adet, not,
+        durum: 'Yeni Bekliyor', tarih: bugunTarih(), kaynak: 'Manuel'
     });
-    await saveDB(); closeModal('modal-siparis'); toast('Sipariş oluşturuldu!', 'success'); siparisleriRender(); dashboardGuncelle();
+    await saveDB(); 
+    closeModal('modal-siparis'); 
+    ['sip-isim','sip-tel','sip-adres','sip-not'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('sip-adet').value = 1;
+    toast('Sipariş oluşturuldu!', 'success'); siparisleriRender(); dashboardGuncelle();
 }
 
-function siparisleriRender() {
-    document.getElementById('siparis-tbody').innerHTML = DB.siparisler.map(s => `
-        <tr><td>#${s.id}</td><td style="font-weight:600;color:white">${s.isim}</td><td>${s.tel}</td>
-        <td><select class="filter-select" onchange="siparisDurumGuncelle('${s.id}', this.value)">
-            <option ${s.durum==='Yeni Bekliyor'?'selected':''}>Yeni Bekliyor</option><option ${s.durum==='İşleniyor'?'selected':''}>İşleniyor</option><option ${s.durum==='Tamamlandı'?'selected':''}>Tamamlandı</option>
-        </select></td>
-        <td><button class="btn btn-danger btn-icon" onclick="siparisSil('${s.id}')"><i class="fas fa-trash"></i></button></td></tr>`).reverse().join('');
+function siparisleriRender(liste) {
+    const data = liste || DB.siparisler;
+    const tbody = document.getElementById('siparis-tbody');
+    if (data.length === 0) {
+        tbody.innerHTML = '';
+        document.getElementById('siparis-no-results').style.display = data.length === 0 && (liste !== undefined) ? 'block' : 'none';
+        if (!liste) tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><i class="fas fa-box-open"></i><h4>Henüz sipariş yok</h4><p>Yeni sipariş eklemek için butona tıklayın</p></div></td></tr>`;
+        return;
+    }
+    document.getElementById('siparis-no-results').style.display = 'none';
+    tbody.innerHTML = data.map(s => `
+        <tr>
+            <td><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)">#${s.id}</span></td>
+            <td><div style="font-weight:600;color:white">${s.isim}</div><div style="font-size:11px;color:var(--muted)">${s.kaynak || 'Manuel'}</div></td>
+            <td style="font-family:'JetBrains Mono',monospace;font-size:12.5px">${s.tel}</td>
+            <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px">${s.urun}</td>
+            <td style="font-size:12px;color:var(--muted)">${s.tarih}</td>
+            <td><select class="filter-select" style="font-size:12px;padding:5px 8px" onchange="siparisDurumGuncelle(${s.id}, this.value)">
+                ${['Yeni Bekliyor','İşleniyor','Kargoya Verildi','Tamamlandı','İptal Edildi'].map(d => `<option ${s.durum===d?'selected':''}>${d}</option>`).join('')}
+            </select></td>
+            <td><div style="display:flex;gap:6px">
+                <button class="btn btn-secondary btn-icon" title="Detay" onclick="siparisDetay(${s.id})"><i class="fas fa-eye"></i></button>
+                <button class="btn btn-danger btn-icon" title="Sil" onclick="siparisConfirmSil(${s.id})"><i class="fas fa-trash"></i></button>
+            </div></td>
+        </tr>`).reverse().join('');
 }
+
+function siparisleriFiltrele() {
+    const q = document.getElementById('sip-search').value.toLowerCase();
+    const d = document.getElementById('sip-filter-durum').value;
+    const filtered = DB.siparisler.filter(s => (!q || s.isim.toLowerCase().includes(q) || s.tel.includes(q)) && (!d || s.durum === d));
+    siparisleriRender(filtered);
+}
+
+function siparisDetay(id) {
+    const s = DB.siparisler.find(x => x.id === id);
+    if (!s) return;
+    document.getElementById('siparis-detay-icerik').innerHTML = `
+        <div style="background:var(--bg);border-radius:10px;padding:16px;border:1px solid var(--border);margin-bottom:16px">
+            <div class="siparis-detail-row"><strong>Sipariş No</strong> <span>#${s.id}</span></div>
+            <div class="siparis-detail-row"><strong>Müşteri</strong> <span style="font-weight:600;color:white">${s.isim}</span></div>
+            <div class="siparis-detail-row"><strong>Telefon</strong> <span style="font-family:'JetBrains Mono',monospace">${s.tel}</span></div>
+            <div class="siparis-detail-row"><strong>Adres</strong> <span>${s.adres}</span></div>
+            <div class="siparis-detail-row"><strong>Ürün</strong> <span>${s.urun}</span></div>
+            <div class="siparis-detail-row"><strong>Adet</strong> <span>${s.adet || 1}</span></div>
+            <div class="siparis-detail-row"><strong>Tarih</strong> <span>${s.tarih}</span></div>
+            <div class="siparis-detail-row"><strong>Kaynak</strong> ${s.kaynak === 'WhatsApp Bot' ? '<span class="badge badge-green"><i class="fab fa-whatsapp"></i> WhatsApp Bot</span>' : '<span class="badge badge-muted">Manuel</span>'}</div>
+            <div class="siparis-detail-row"><strong>Durum</strong> <span class="badge badge-blue">${s.durum}</span></div>
+            ${s.not ? `<div class="siparis-detail-row"><strong>Not</strong> <span style="color:var(--muted)">${s.not}</span></div>` : ''}
+        </div>`;
+    openModal('modal-siparis-detay');
+}
+
 async function siparisDurumGuncelle(id, yeniDurum) { const sip = DB.siparisler.find(s => s.id === id); if (sip) { sip.durum = yeniDurum; await saveDB(); toast('Sipariş güncellendi', 'info'); dashboardGuncelle(); } }
-async function siparisSil(id) { openConfirm('Silinsin mi?', '', async () => { DB.siparisler = DB.siparisler.filter(s => s.id !== id); await saveDB(); siparisleriRender(); dashboardGuncelle(); }); }
+async function siparisConfirmSil(id) { openConfirm(`Sipariş #${id} silinsin mi?`, 'Bu işlem geri alınamaz.', async () => { DB.siparisler = DB.siparisler.filter(s => s.id !== id); await saveDB(); siparisleriRender(); dashboardGuncelle(); toast(`Sipariş #${id} silindi`, 'warning'); }); }
 
-function urunleriRender() { document.getElementById('urun-grid').innerHTML = DB.urunler.map(u => `<div class="product-card"><div class="product-id">${u.id}</div><div class="product-name">${u.isim}</div><div class="product-price">${u.fiyat}</div><button class="btn btn-danger btn-icon" style="margin-top:10px" onclick="urunSil('${u.id}')"><i class="fas fa-trash"></i> Sil</button></div>`).join(''); }
-function urunModalAc() { openModal('modal-urun'); }
-async function urunKaydet() { const isim = document.getElementById('urun-isim').value; if(!isim) return; DB.urunler.push({ id: document.getElementById('urun-id').value, isim, fiyat: document.getElementById('urun-fiyat').value, aciklama: "" }); await saveDB(); closeModal('modal-urun'); urunleriRender(); }
-async function urunSil(id) { openConfirm('Silinsin mi?', '', async () => { DB.urunler = DB.urunler.filter(u => u.id !== id); await saveDB(); urunleriRender(); }); }
-function siparisSiparisMOdalUrunDoldur() { document.getElementById('sip-urun').innerHTML = DB.urunler.map(u => `<option value="${u.id}">${u.isim}</option>`).join(''); }
+function urunleriRender(liste) {
+    const data = liste || DB.urunler;
+    const grid = document.getElementById('urun-grid');
+    const noRes = document.getElementById('urun-no-results');
+    if (data.length === 0) { grid.innerHTML = ''; noRes.style.display = 'block'; return; }
+    noRes.style.display = 'none';
+    grid.innerHTML = data.map(u => `
+        <div class="product-card">
+            <div class="product-id">${u.id}</div><div class="product-name">${u.isim}</div><div class="product-desc">${u.aciklama}</div>
+            <div class="product-footer"><div class="product-price">${u.fiyat}</div><div class="product-actions"><button class="btn btn-secondary btn-icon" title="Düzenle" onclick="urunDuzenle('${u.id}')"><i class="fas fa-pen"></i></button><button class="btn btn-danger btn-icon" title="Sil" onclick="urunConfirmSil('${u.id}')"><i class="fas fa-trash"></i></button></div></div>
+        </div>`).join('');
+}
+function urunleriFiltrele() { const q = document.getElementById('urun-search').value.toLowerCase(); const filtered = DB.urunler.filter(u => u.isim.toLowerCase().includes(q) || u.id.toLowerCase().includes(q)); urunleriRender(filtered); }
+function urunModalAc() { document.getElementById('urun-modal-title').innerText = 'Yeni Ürün Ekle'; document.getElementById('urun-edit-id').value = ''; ['urun-id','urun-isim','urun-fiyat','urun-aciklama'].forEach(id => document.getElementById(id).value = ''); document.getElementById('urun-id').disabled = false; openModal('modal-urun'); }
+function urunDuzenle(id) { const u = DB.urunler.find(x => x.id === id); if (!u) return; document.getElementById('urun-modal-title').innerText = 'Ürünü Düzenle'; document.getElementById('urun-edit-id').value = id; document.getElementById('urun-id').value = u.id; document.getElementById('urun-id').disabled = true; document.getElementById('urun-isim').value = u.isim; document.getElementById('urun-fiyat').value = u.fiyat; document.getElementById('urun-aciklama').value = u.aciklama; openModal('modal-urun'); }
+async function urunKaydet() { const editId = document.getElementById('urun-edit-id').value; const id = document.getElementById('urun-id').value.trim(); const isim = document.getElementById('urun-isim').value.trim(); const fiyat = document.getElementById('urun-fiyat').value.trim(); const aciklama = document.getElementById('urun-aciklama').value.trim(); if (!isim || !fiyat || !aciklama) { toast('Zorunlu alanları doldurun!', 'error'); return; } if (editId) { const u = DB.urunler.find(x => x.id === editId); if (u) { u.isim = isim; u.fiyat = fiyat; u.aciklama = aciklama; } toast(`${isim} güncellendi`, 'success'); } else { if (!id) { toast('Ürün kodu gerekli!', 'error'); return; } if (DB.urunler.find(u => u.id === id)) { toast('Bu ürün kodu zaten var!', 'error'); return; } DB.urunler.push({ id, isim, fiyat, aciklama }); toast(`${isim} eklendi`, 'success'); } await saveDB(); closeModal('modal-urun'); urunleriRender(); siparisSiparisMOdalUrunDoldur(); }
+function urunConfirmSil(id) { const u = DB.urunler.find(x => x.id === id); openConfirm(`"${u?.isim}" silinsin mi?`, 'Bu işlem geri alınamaz.', async () => { DB.urunler = DB.urunler.filter(x => x.id !== id); await saveDB(); urunleriRender(); toast('Ürün silindi', 'warning'); }); }
+function siparisSiparisMOdalUrunDoldur() { document.getElementById('sip-urun').innerHTML = DB.urunler.map(u => `<option value="${u.id}">${u.isim} — ${u.fiyat}</option>`).join(''); }
 
-async function sikayetEkle() { DB.sikayetler.push({ id: Date.now().toString().slice(-4), isim: document.getElementById('sik-isim').value, konu: document.getElementById('sik-konu').value, durum: 'Açık' }); await saveDB(); closeModal('modal-sikayet'); sikayetleriRender(); dashboardGuncelle(); }
-function sikayetleriRender() { document.getElementById('sikayet-tbody').innerHTML = DB.sikayetler.map(s => `<tr><td>#${s.id}</td><td>${s.isim}</td><td>${s.konu}</td><td>${s.durum}</td><td><button class="btn btn-danger btn-icon" onclick="sikayetSil('${s.id}')"><i class="fas fa-trash"></i></button></td></tr>`).join(''); }
-async function sikayetSil(id) { openConfirm('Silinsin mi?', '', async () => { DB.sikayetler = DB.sikayetler.filter(s => s.id !== id); await saveDB(); sikayetleriRender(); dashboardGuncelle(); }); }
+async function sikayetEkle() { const isim = document.getElementById('sik-isim').value.trim(); const tel = document.getElementById('sik-tel').value.trim(); const konu = document.getElementById('sik-konu').value; const aciklama = document.getElementById('sik-aciklama').value.trim(); if (!isim) { toast('Müşteri adı gerekli!', 'error'); return; } DB.sikayetler.push({ id: DB.sikayetler.length + 1, isim, tel, konu, aciklama, durum: 'Açık', tarih: bugunTarih() }); await saveDB(); closeModal('modal-sikayet'); ['sik-isim','sik-tel','sik-aciklama'].forEach(id => document.getElementById(id).value = ''); toast('Şikayet kaydedildi', 'success'); sikayetleriRender(); dashboardGuncelle(); }
+function sikayetleriRender() { const tbody = document.getElementById('sikayet-tbody'); const empty = document.getElementById('sikayet-empty'); if (DB.sikayetler.length === 0) { tbody.innerHTML = ''; empty.style.display = 'flex'; empty.style.flexDirection = 'column'; empty.style.alignItems = 'center'; return; } empty.style.display = 'none'; tbody.innerHTML = DB.sikayetler.map(s => `<tr><td><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)">#${s.id}</span></td><td><div style="font-weight:600;color:white">${s.isim}</div><div style="font-size:11px;color:var(--muted)">${s.tel || '—'}</div></td><td>${s.konu}</td><td style="font-size:12px;color:var(--muted)">${s.tarih}</td><td><select class="filter-select" style="font-size:12px;padding:5px 8px" onchange="sikayetDurumGuncelle(${s.id}, this.value)">${['Açık','İşlemde','Çözüldü'].map(d => `<option ${s.durum===d?'selected':''}>${d}</option>`).join('')}</select></td><td><div style="display:flex;gap:6px"><button class="btn btn-secondary btn-icon" onclick="sikayetDetay(${s.id})"><i class="fas fa-eye"></i></button><button class="btn btn-danger btn-icon" onclick="sikayetSil(${s.id})"><i class="fas fa-trash"></i></button></div></td></tr>`).join(''); }
+async function sikayetDurumGuncelle(id, durum) { const s = DB.sikayetler.find(x => x.id === id); if (s) { s.durum = durum; await saveDB(); toast('Şikayet durumu güncellendi', 'info'); dashboardGuncelle(); } }
+function sikayetDetay(id) { const s = DB.sikayetler.find(x => x.id === id); if (!s) return; document.getElementById('sikayet-detay-icerik').innerHTML = `<div style="background:var(--bg);border-radius:10px;padding:16px;border:1px solid var(--border)"><div class="siparis-detail-row"><strong>Müşteri</strong> <span style="font-weight:600;color:white">${s.isim}</span></div><div class="siparis-detail-row"><strong>Telefon</strong> <span>${s.tel || '—'}</span></div><div class="siparis-detail-row"><strong>Konu</strong> <span>${s.konu}</span></div><div class="siparis-detail-row"><strong>Tarih</strong> <span>${s.tarih}</span></div><div class="siparis-detail-row"><strong>Durum</strong> <span>${s.durum}</span></div>${s.aciklama ? `<div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)"><div style="font-size:11px;color:var(--muted);margin-bottom:6px">AÇIKLAMA</div><div style="font-size:13.5px;line-height:1.6">${s.aciklama}</div></div>` : ''}</div>`; openModal('modal-sikayet-detay'); }
+function sikayetSil(id) { openConfirm('Şikayet silinsin mi?', '', async () => { DB.sikayetler = DB.sikayetler.filter(x => x.id !== id); await saveDB(); sikayetleriRender(); dashboardGuncelle(); toast('Şikayet silindi', 'warning'); }); }
 
-async function kullaniciEkle() { DB.kullanicilar.push({ id: document.getElementById('kul-username').value.trim().toLowerCase(), isim: document.getElementById('kul-isim').value, sifre: document.getElementById('kul-sifre').value, rol: document.getElementById('kul-rol').value, oturum_acik: false }); await saveDB(); closeModal('modal-kullanici'); kullanicilariRender(); }
-function kullanicilariRender() { document.getElementById('kullanici-tbody').innerHTML = DB.kullanicilar.map(k => `<tr><td>${k.isim}</td><td>${k.rol}</td><td>${k.id}</td><td><button class="btn btn-danger btn-icon" onclick="kullaniciSil('${k.id}')"><i class="fas fa-trash"></i></button></td></tr>`).join(''); }
-async function kullaniciSil(id) { if(id !== 'admin') { openConfirm('Silinsin mi?', '', async () => { DB.kullanicilar = DB.kullanicilar.filter(k => k.id !== id); await saveDB(); kullanicilariRender(); }); } }
+async function kullaniciEkle() { const isim = document.getElementById('kul-isim').value.trim(); const username = document.getElementById('kul-username').value.trim().toLowerCase(); const sifre = document.getElementById('kul-sifre').value; const dept = document.getElementById('kul-dept').value.trim(); const rol = document.getElementById('kul-rol').value; if (!isim || !username || !sifre) { toast('Zorunlu alanları doldurun!', 'error'); return; } if (DB.kullanicilar.find(k => k.id === username)) { toast('Bu kullanıcı adı zaten var!', 'error'); return; } DB.kullanicilar.push({ id: username, sifre, isim, rol, dept, tarih: bugunTarih(), oturum_acik: false }); await saveDB(); closeModal('modal-kullanici'); ['kul-isim','kul-username','kul-sifre','kul-dept'].forEach(id => document.getElementById(id).value = ''); toast(`${isim} kullanıcısı oluşturuldu`, 'success'); kullanicilariRender(); }
+function kullanicilariRender() { const tbody = document.getElementById('kullanici-tbody'); tbody.innerHTML = DB.kullanicilar.map((k, i) => { const colors = ['var(--orange)','var(--blue)','var(--green)','var(--purple)','var(--yellow)']; const c = colors[i % colors.length]; return `<tr><td><div style="display:flex;align-items:center;gap:12px"><div class="user-avatar" style="background:${c}22;color:${c}">${k.isim[0]}</div><div><div style="font-weight:600;color:white">${k.isim}</div><div style="font-size:11px;color:var(--muted)">${k.dept || '—'}</div></div></div></td><td><span class="badge badge-muted">${k.rol}</span></td><td><span style="font-family:'JetBrains Mono',monospace;font-size:12.5px">${k.id}</span></td><td>${k.id === 'admin' ? '<span style="font-size:12px;color:var(--muted);font-style:italic">Değiştirilemez</span>' : `<div style="display:flex;gap:6px"><button class="btn btn-danger btn-icon" onclick="kullaniciSil('${k.id}')"><i class="fas fa-trash"></i></button></div>`}</td></tr>`; }).join(''); }
+function kullaniciSil(id) { const k = DB.kullanicilar.find(x => x.id === id); openConfirm(`"${k?.isim}" silinsin mi?`, '', async () => { DB.kullanicilar = DB.kullanicilar.filter(x => x.id !== id); await saveDB(); kullanicilariRender(); toast('Kullanıcı silindi', 'warning'); }); }
+
+/* ==================== API VE AYARLAR FONKSİYONLARI (GERİ GELDİ) ==================== */
+async function apiAyarlariKaydet() {
+    DB.ayarlar.apiKey = document.getElementById('api-key').value.trim();
+    DB.ayarlar.wpPhoneId = document.getElementById('wp-phone-id').value.trim();
+    DB.ayarlar.wpBizId = document.getElementById('wp-biz-id').value.trim();
+    DB.ayarlar.wpToken = document.getElementById('wp-token').value.trim();
+    DB.ayarlar.model = document.getElementById('api-model').value;
+    DB.ayarlar.prompt = document.getElementById('api-prompt').value;
+    await saveDB();
+    closeModal('modal-api');
+    toast('API ayarları kaydedildi!', 'success');
+    document.getElementById('bot-durum-text').innerText = DB.ayarlar.apiKey ? '✓ Yapılandırıldı' : 'Yapılandırılmamış';
+    document.getElementById('bot-durum-text').style.color = DB.ayarlar.apiKey ? 'var(--green)' : 'var(--muted)';
+    document.getElementById('bot-model-text').innerText = DB.ayarlar.model || '—';
+}
+
+async function sirketBilgileriKaydet() {
+    DB.ayarlar.sirket = document.getElementById('sirket-isim').value;
+    DB.ayarlar.konum = document.getElementById('sirket-konum').value;
+    DB.ayarlar.karsilama = document.getElementById('sirket-karsilama').value;
+    document.getElementById('wp-karsilama-mesaji').innerHTML = DB.ayarlar.karsilama;
+    await saveDB();
+    toast('Şirket bilgileri kaydedildi', 'success');
+}
+
+async function sistemPromptuGuncelle() {
+    const urunListesi = DB.urunler.map(u => `- ${u.isim}: ${u.fiyat} (${u.aciklama})`).join('\n');
+    const yeniPrompt = `Sen Prohummer şirketinin WhatsApp asistanısın.\nKonum: ${DB.ayarlar.konum}\n\nÜrünler:\n${urunListesi}\n\nKurallar:\n1. Müşteri ürün sorarsa kibarca yardımcı ol.\n2. Sipariş vermek isterse; ad, soyad, telefon numarası ve tam adresini tek tek iste.\n3. ÇOK ÖNEMLİ: Müşteri tüm bilgileri verip siparişi onayladığında, ona teşekkür et ve mesajının EN SONUNA mutlaka şu formatta gizli bir kayıt kodu ekle:\n[SIPARIS: Müşteri Adı Soyadı | Telefonu | Adresi | Aldığı Ürün]`;
+    DB.ayarlar.prompt = yeniPrompt;
+    document.getElementById('api-prompt').value = yeniPrompt;
+    await saveDB();
+    toast(`Sistem promptu ${DB.urunler.length} ürünle güncellendi!`, 'success');
+}
+
+async function wpGonder() {
+    const input = document.getElementById('wp-user-input');
+    const msg = input.value.trim();
+    if (!msg) return;
+    input.value = '';
+    botMesajSayisi++;
+    document.getElementById('bot-mesaj-sayisi').innerText = botMesajSayisi;
+    chatHistory.push({ role: 'user', content: msg });
+    
+    const chatEl = document.getElementById('wp-chat-messages');
+    chatEl.innerHTML += `<div class="chat-bubble bubble-out">${msg}</div>`;
+    chatEl.scrollTop = chatEl.scrollHeight;
+    
+    if (!DB.ayarlar.apiKey) { toast("Ayarlardan OpenAI API anahtarı eklemelisiniz!", "error"); return; }
+    
+    document.getElementById('wp-typing').style.display = 'block';
+    try {
+        const res = await fetch(`${API_BASE}/bot/mesaj`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', "x-token": SECURITY_TOKEN },
+            body: JSON.stringify({
+                mesaj_gecmisi: chatHistory, api_key: DB.ayarlar.apiKey, model: DB.ayarlar.model,
+                prompt: DB.ayarlar.prompt + "\n\nŞU AN STOKTAKİ GÜNCEL ÜRÜNLERİMİZ ŞUNLARDIR: " + DB.urunler.map(u => u.isim).join(", ")
+            })
+        });
+        
+        const data = await res.json();
+        document.getElementById('wp-typing').style.display = 'none';
+        
+        if (res.ok) {
+            chatHistory.push({ role: 'assistant', content: data.ham_cevap });
+            chatEl.innerHTML += `<div class="chat-bubble bubble-in">${data.cevap}</div>`;
+            
+            if (data.yeni_siparis) {
+                DB.siparisler.push(data.yeni_siparis);
+                await saveDB(); 
+                const sipDetay = `${data.yeni_siparis.isim} | ${data.yeni_siparis.tel} | ${data.yeni_siparis.urun}`;
+                chatEl.innerHTML += `<div class="chat-bubble bubble-sys"><i class="fas fa-bell"></i> YENİ SİPARİŞ ALINDI → ${sipDetay}</div>`;
+                toast(`Yeni Bot Siparişi: ${data.yeni_siparis.isim}`, 'success');
+                dashboardGuncelle();
+            }
+        } else {
+            throw new Error(data.detail || "Bilinmeyen hata");
+        }
+    } catch(e) {
+        document.getElementById('wp-typing').style.display = 'none';
+        chatEl.innerHTML += `<div class="chat-bubble bubble-sys" style="color:var(--red)">API Hatası: ${e.message}</div>`;
+    }
+    chatEl.scrollTop = chatEl.scrollHeight;
+}
+
+function chatTemizle() { chatHistory = []; document.getElementById('wp-chat-messages').innerHTML = `<div class="chat-bubble bubble-in">${DB.ayarlar.karsilama}</div>`; }
 
 function veriExport() { const blob = new Blob([JSON.stringify(DB, null, 2)], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `prohummer_yedek.json`; a.click(); }
+function veriSifirlaConfirm() { openConfirm('Tüm siparişler silinsin mi?', 'Bu işlem geri alınamaz!', async () => { DB.siparisler = []; await saveDB(); toast('Siparişler sıfırlandı', 'warning'); dashboardGuncelle(); }); }
+
 function bugunTarih() { const d = new Date(); return `${d.getDate()}.${d.getMonth()+1}.${d.getFullYear()}`; }
 function toast(msg, type='info') { const el = document.createElement('div'); el.className = `toast ${type}`; el.innerHTML = msg; document.getElementById('toast-area').appendChild(el); setTimeout(() => el.remove(), 3000); }
 
