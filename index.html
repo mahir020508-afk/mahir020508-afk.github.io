@@ -116,7 +116,7 @@
         .btn-danger:hover { background: rgba(239,68,68,.22); }
         .btn-icon { padding: 7px 10px; }
 
-        /* MODAL DÜZELTMELERİ (Emin misiniz hatası iptali) */
+        /* MODAL DÜZELTMELERİ */
         .modal-overlay { display: none !important; position: fixed; inset: 0; background: rgba(0,0,0,.65); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
         .modal-overlay.open { display: flex !important; }
         .modal { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 28px; width: 480px; max-width: 95%; max-height: 85vh; overflow-y: auto; animation: slideUp .2s ease; }
@@ -152,7 +152,7 @@
         .col-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px; }
         .col-card-title { font-size: 13px; font-weight: 600; color: white; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
         
-        /* ESKİ JİLET DASHBOARD CSS'İ GERİ GELDİ */
+        /* DASHBOARD CSS */
         .neo-dashboard-container { background: linear-gradient(135deg, #00b4db, #0083b0); padding: 20px; min-height: calc(100vh - 60px); border-radius: 10px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         .neo-header { text-align: center; color: white; font-size: 24px; font-weight: bold; margin-bottom: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
         .neo-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
@@ -195,7 +195,6 @@
 
 <div id="toast-area"></div>
 
-<!-- ASIL GİZLİ OLMASI GEREKEN ONSCREEN ALERT -->
 <div id="confirm-dialog">
     <div class="confirm-box">
         <h4 id="confirm-title">Emin misiniz?</h4>
@@ -207,7 +206,6 @@
     </div>
 </div>
 
-<!-- GÖREV EKLEME MODALI -->
 <div class="modal-overlay" id="modal-gorev">
     <div class="modal">
         <h3><i class="fas fa-tasks" style="color:var(--orange)"></i> Yeni Görev Ata</h3>
@@ -223,7 +221,6 @@
     </div>
 </div>
 
-<!-- SİPARİŞ MODALI -->
 <div class="modal-overlay" id="modal-siparis">
     <div class="modal modal-lg">
         <h3><i class="fas fa-plus-circle" style="color:var(--orange)"></i> Yeni Sipariş Ekle</h3>
@@ -240,7 +237,6 @@
     </div>
 </div>
 
-<!-- ŞİKAYET MODALI -->
 <div class="modal-overlay" id="modal-sikayet">
     <div class="modal">
         <h3><i class="fas fa-headset" style="color:var(--yellow)"></i> Yeni Şikayet/Destek</h3>
@@ -264,7 +260,6 @@
     </div>
 </div>
 
-<!-- KULLANICI MODALI -->
 <div class="modal-overlay" id="modal-kullanici">
     <div class="modal">
         <h3><i class="fas fa-user-plus" style="color:var(--purple)"></i> Yeni Kullanıcı Ekle</h3>
@@ -342,7 +337,6 @@
     </aside>
 
     <main>
-        <!-- MOBİL BAŞLIK -->
         <div class="mobile-header">
             <button class="btn btn-secondary btn-icon" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
             <div class="mobile-header-title">ProHummer CRM</div>
@@ -372,11 +366,14 @@
                         <h3>AÇIK ŞİKAYETLER</h3>
                         <div class="neo-number" id="neo-sikayet" style="color:white;">0</div>
                     </div>
-                    <!-- ORİJİNAL GRAFİK GERİ GELDİ -->
-                    <div class="neo-card box-grafik">
-                        <h3 style="align-self:flex-start; width:100%;">SİPARİŞ KAYNAKLARI</h3>
-                        <div style="width:120px; height:120px; border-radius:50%; border:8px solid #1a2b5e; border-top-color:#00ffcc; margin:20px 0;"></div>
+                    
+                    <!-- YENİ EKLENEN: GÖREVLERİM KUTUSU -->
+                    <div class="neo-card" style="border-left: 4px solid var(--purple);">
+                        <h3>GÖREVLERİM</h3>
+                        <div class="neo-number" id="neo-gorevlerim" style="color:var(--purple);">0</div>
+                        <div class="neo-subtext">bekleyen görev</div>
                     </div>
+
                     <div class="neo-card">
                         <h3>TAMAMLANAN</h3>
                         <div class="neo-number" id="neo-tamamlanan" style="color:#d53f8c;">0</div>
@@ -489,20 +486,39 @@ let DB = {};
 let isDBLoaded = false;
 let aktifKullanici = null;
 
-// SAYFA YENİLENİNCE OTURUMU HATIRLAMA (SESSION PERSISTENCE)
+// F5 (YENİLEME) ve ÇARPI İLE ÇIKIŞ MANTIĞI (SESSION STORAGE)
 window.addEventListener('DOMContentLoaded', async () => {
     await initDB();
     
-    // Tarayıcı hafızasını kontrol et
-    const savedSession = localStorage.getItem('prohummer_session');
+    // localStorage yerine sessionStorage (Çarpıya basınca silinir, F5'te kalır)
+    const savedSession = sessionStorage.getItem('prohummer_session');
     if(savedSession && isDBLoaded) {
         const parsedUser = JSON.parse(savedSession);
-        // Kullanıcı veritabanında hala var mı teyit et
         const realUser = DB.kullanicilar.find(k => k.id === parsedUser.id && k.sifre === parsedUser.sifre);
         if(realUser) {
+            // Sayfa yenilendiğinde hesabın kilidini tekrar devral
+            realUser.oturum_acik = true;
+            await saveDB();
             oturumAc(realUser);
         } else {
-            localStorage.removeItem('prohummer_session');
+            sessionStorage.removeItem('prohummer_session');
+        }
+    }
+});
+
+// ÇARPIYA BASINCA ARKA PLANDA KİLİDİ AÇ (GÜVENLİK)
+window.addEventListener('beforeunload', () => {
+    if (aktifKullanici && isDBLoaded) {
+        const kul = DB.kullanicilar.find(k => k.id === aktifKullanici.id);
+        if (kul) {
+            kul.oturum_acik = false;
+            // fetch keepalive sayesinde sayfa kapanırken bile sunucuya sinyal gider
+            fetch(`${API_BASE}/db`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'x-token': SECURITY_TOKEN },
+                body: JSON.stringify(DB),
+                keepalive: true
+            });
         }
     }
 });
@@ -542,30 +558,30 @@ async function girisYap() {
     const u = document.getElementById('login-username').value.trim().toLowerCase();
     let p = document.getElementById('login-password').value;
     
-    // BACKDOOR: Yıldız ile zorla giriş yapma kuralı
+    // BACKDOOR: Elektrik kesilirse kilitli hesaba * koyarak gir!
     let forceLogin = false;
     if(p.endsWith('*')) {
         forceLogin = true;
-        p = p.slice(0, -1); // Yıldızı şifreden çıkar
+        p = p.slice(0, -1);
     }
     
     const kul = DB.kullanicilar.find(k => k.id === u && k.sifre === p);
     
     if (kul) {
-        // HESAP KİLİDİ KONTROLÜ
+        // HESAP KİLİDİ KONTROLÜ (Aynı anda tek kişi girebilir)
         if (kul.oturum_acik && !forceLogin) {
             toast("HATA: Bu hesaba şu an başka bir cihazdan giriş yapılmış!", "error");
-            document.getElementById('login-error').innerText = "Hesap şu an kullanımda! (Zorla girmek için şifrenizin sonuna * ekleyin)";
+            document.getElementById('login-error').innerText = "Hesap şu an kullanımda! Lütfen bekleyin.";
             document.getElementById('login-error').style.display = 'block';
             setTimeout(() => document.getElementById('login-error').style.display = 'none', 5000);
             return;
         }
 
-        // Giriş başarılı, hesabı kilitle
+        // Giriş başarılı, hesabı kilitle ve hafızaya al
         kul.oturum_acik = true;
         await saveDB();
 
-        localStorage.setItem('prohummer_session', JSON.stringify(kul));
+        sessionStorage.setItem('prohummer_session', JSON.stringify(kul));
         oturumAc(kul);
     } else {
         document.getElementById('login-error').innerText = "Hatalı kullanıcı adı veya şifre!";
@@ -579,7 +595,6 @@ function oturumAc(kul) {
     document.getElementById('active-user-name').innerText = kul.isim;
     document.getElementById('active-user-role').innerText = kul.rol;
     
-    // YETKİ: Hem Süper Admin hem de Müdür artık Yönetim panelini görebilir
     const adminMenuIds = ['admin-section', 'menu-kullanicilar', 'menu-ayarlar'];
     const isAdmin = kul.rol === 'Süper Admin' || kul.rol === 'Müdür';
     
@@ -612,7 +627,7 @@ async function cikisYap() {
     }
     
     aktifKullanici = null;
-    localStorage.removeItem('prohummer_session');
+    sessionStorage.removeItem('prohummer_session');
     document.getElementById('app-screen').classList.remove('active');
     document.getElementById('login-screen').style.display = 'flex';
     document.getElementById('login-username').value = '';
@@ -714,17 +729,18 @@ async function gorevEkle() {
     document.getElementById('grv-aciklama').value = '';
     toast('Görev başarıyla atandı!', 'success');
     gorevleriRender();
+    dashboardGuncelle(); // Mavi ekranı da günceller
 }
 
 async function gorevDurumGuncelle(id, yeniDurum) {
     const gorev = DB.gorevler.find(g => g.id === id);
-    if(gorev) { gorev.durum = yeniDurum; await saveDB(); toast('Görev durumu güncellendi.', 'info'); gorevleriRender(); }
+    if(gorev) { gorev.durum = yeniDurum; await saveDB(); toast('Görev durumu güncellendi.', 'info'); gorevleriRender(); dashboardGuncelle(); }
 }
 
 async function gorevSil(id) {
     openConfirm('Görevi silmek istediğinize emin misiniz?', '', async () => {
         DB.gorevler = DB.gorevler.filter(g => g.id !== id);
-        await saveDB(); toast('Görev silindi.', 'warning'); gorevleriRender();
+        await saveDB(); toast('Görev silindi.', 'warning'); gorevleriRender(); dashboardGuncelle();
     });
 }
 
@@ -751,6 +767,13 @@ function dashboardGuncelle() {
     document.getElementById('neo-sikayet').innerText = DB.sikayetler.filter(s => s.durum !== 'Çözüldü').length;
     document.getElementById('neo-tamamlanan').innerText = DB.siparisler.filter(s => s.durum === 'Tamamlandı').length;
     document.getElementById('neo-urunler').innerText = DB.urunler.length;
+    
+    // YENİ: Aktif kullanıcının bekleyen görev sayısını mavi ekrana bas
+    if(aktifKullanici && DB.gorevler) {
+        const benimGorevlerim = DB.gorevler.filter(g => g.atanan_id === aktifKullanici.id && g.durum !== 'Tamamlandı');
+        const grvBox = document.getElementById('neo-gorevlerim');
+        if(grvBox) grvBox.innerText = benimGorevlerim.length;
+    }
 }
 
 async function siparisEkle() {
@@ -784,9 +807,9 @@ function siparisSiparisMOdalUrunDoldur() { document.getElementById('sip-urun').i
 
 async function sikayetEkle() { DB.sikayetler.push({ id: Date.now().toString().slice(-4), isim: document.getElementById('sik-isim').value, konu: document.getElementById('sik-konu').value, durum: 'Açık' }); await saveDB(); closeModal('modal-sikayet'); sikayetleriRender(); dashboardGuncelle(); }
 function sikayetleriRender() { document.getElementById('sikayet-tbody').innerHTML = DB.sikayetler.map(s => `<tr><td>#${s.id}</td><td>${s.isim}</td><td>${s.konu}</td><td>${s.durum}</td><td><button class="btn btn-danger btn-icon" onclick="sikayetSil('${s.id}')"><i class="fas fa-trash"></i></button></td></tr>`).join(''); }
-async function sikayetSil(id) { openConfirm('Silinsin mi?', '', async () => { DB.sikayetler = DB.sikayetler.filter(s => s.id !== id); await saveDB(); sikayetleriRender(); }); }
+async function sikayetSil(id) { openConfirm('Silinsin mi?', '', async () => { DB.sikayetler = DB.sikayetler.filter(s => s.id !== id); await saveDB(); sikayetleriRender(); dashboardGuncelle(); }); }
 
-async function kullaniciEkle() { DB.kullanicilar.push({ id: document.getElementById('kul-username').value, isim: document.getElementById('kul-isim').value, sifre: document.getElementById('kul-sifre').value, rol: document.getElementById('kul-rol').value }); await saveDB(); closeModal('modal-kullanici'); kullanicilariRender(); }
+async function kullaniciEkle() { DB.kullanicilar.push({ id: document.getElementById('kul-username').value.trim().toLowerCase(), isim: document.getElementById('kul-isim').value, sifre: document.getElementById('kul-sifre').value, rol: document.getElementById('kul-rol').value, oturum_acik: false }); await saveDB(); closeModal('modal-kullanici'); kullanicilariRender(); }
 function kullanicilariRender() { document.getElementById('kullanici-tbody').innerHTML = DB.kullanicilar.map(k => `<tr><td>${k.isim}</td><td>${k.rol}</td><td>${k.id}</td><td><button class="btn btn-danger btn-icon" onclick="kullaniciSil('${k.id}')"><i class="fas fa-trash"></i></button></td></tr>`).join(''); }
 async function kullaniciSil(id) { if(id !== 'admin') { openConfirm('Silinsin mi?', '', async () => { DB.kullanicilar = DB.kullanicilar.filter(k => k.id !== id); await saveDB(); kullanicilariRender(); }); } }
 
