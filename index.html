@@ -550,13 +550,14 @@
                 
                 <div class="col-card" id="kpi-bolumu">
                     <div class="col-card-title"><i class="fas fa-chart-line" style="color:var(--green)"></i> Personel Performans (KPI) Tablosu</div>
-                    <p style="font-size:12px; color:var(--muted); margin-bottom:15px;">Sistemdeki tamamlanan görev sayılarına göre personel başarı oranları.</p>
+                    <p style="font-size:12px; color:var(--muted); margin-bottom:15px;">Sistemdeki tamamlanan görev, yeni sipariş ve çözülen şikayet skorları.</p>
                     <div class="table-card" style="border:none;">
                         <table style="width:100%; border-collapse: collapse;">
                             <thead><tr style="background:rgba(255,255,255,0.05);">
                                 <th style="padding:10px; text-align:left; color:var(--muted); font-size:11px;">Personel</th>
-                                <th style="padding:10px; text-align:center; color:var(--muted); font-size:11px;">Tamamlanan</th>
-                                <th style="padding:10px; text-align:center; color:var(--muted); font-size:11px;">Devam Eden</th>
+                                <th style="padding:10px; text-align:center; color:var(--muted); font-size:11px;">Görev (Biten)</th>
+                                <th style="padding:10px; text-align:center; color:var(--muted); font-size:11px;">Yeni Sipariş</th>
+                                <th style="padding:10px; text-align:center; color:var(--muted); font-size:11px;">Çözülen Şikayet</th>
                             </tr></thead>
                             <tbody id="kpi-tbody"></tbody>
                         </table>
@@ -584,7 +585,7 @@
             <div class="table-card">
                 <table>
                     <thead><tr>
-                        <th>#</th><th>Müşteri</th><th>Telefon</th><th>Ürün</th><th>Tarih</th><th>Durum</th><th>İşlemler</th>
+                        <th>#</th><th>Müşteri</th><th>Telefon</th><th>Durum</th><th>İşlemler</th>
                     </tr></thead>
                     <tbody id="siparis-tbody"></tbody>
                 </table>
@@ -712,12 +713,12 @@
                     <div class="col-card-title"><i class="fas fa-info-circle" style="color:var(--purple)"></i> Panel Hakkında</div>
                     <div style="font-size:13px;color:var(--muted);line-height:1.9">
                         <p>📦 <strong style="color:var(--text)">ProHummer CRM & ERP</strong></p>
-                        <p>Sürüm: <span style="color:var(--orange);font-family:'JetBrains Mono',monospace">4.0.0 Final</span></p>
+                        <p>Sürüm: <span style="color:var(--orange);font-family:'JetBrains Mono',monospace">7.0.0 (Kapsamlı KPI)</span></p>
                         <ul style="margin-top:8px;display:flex;flex-direction:column;gap:6px;padding-left:16px">
-                            <li>✅ Veri Ezilme (Overwrite) Engeli Eklendi</li>
-                            <li>✅ WhatsApp Bot Simülatörü</li>
-                            <li>✅ Görevler ve KPI Modülü (Canlı Senkronize)</li>
-                            <li>✅ Çoklu Oturum Kilidi (Session Lock)</li>
+                            <li>✅ Çoklu Kullanıcı Veri Ezilme Koruması</li>
+                            <li>✅ Personel Bazlı Kapsamlı Performans (Sipariş/Şikayet)</li>
+                            <li>✅ Güvenli ve Sorunsuz Çıkış Sistemi</li>
+                            <li>✅ Yetki Bazlı Katı Menü Gizliliği</li>
                             <li>✅ %100 Mobil Uyumlu Arayüz</li>
                         </ul>
                     </div>
@@ -740,7 +741,6 @@ let chatHistory = [];
 
 window.addEventListener('DOMContentLoaded', async () => {
     await initDB();
-    
     const savedSession = sessionStorage.getItem('prohummer_session');
     if(savedSession && isDBLoaded) {
         const parsedUser = JSON.parse(savedSession);
@@ -777,9 +777,7 @@ async function sessizDBGuncelle() {
     try {
         const res = await fetch(`${API_BASE}/db`, { headers: { "x-token": SECURITY_TOKEN } });
         if(res.ok) {
-            DB = await res.json(); // Sunucudaki taze veriyi çekip bilgisayardakini ezer!
-            
-            // Eğer boş liste gelirse çökmeyi önle
+            DB = await res.json();
             if (!DB.gorevler) DB.gorevler = [];
             if (!DB.siparisler) DB.siparisler = [];
             if (!DB.sikayetler) DB.sikayetler = [];
@@ -802,7 +800,6 @@ async function saveDB() {
 async function girisYap() {
     if (!isDBLoaded) { toast("Veritabanı senkronize ediliyor...", "warning"); return; }
     
-    // Giriş yapmadan önce güncel veriyi çek! (VERİ EZİLMESİNİ ENGELLER)
     await sessizDBGuncelle(); 
     
     const u = document.getElementById('login-username').value.trim().toLowerCase();
@@ -814,17 +811,6 @@ async function girisYap() {
     const kul = DB.kullanicilar.find(k => k.id === u && k.sifre === p);
     
     if (kul) {
-        if (kul.oturum_acik && !forceLogin) {
-            toast("HATA: Bu hesaba şu an başka bir cihazdan giriş yapılmış!", "error");
-            document.getElementById('login-error').innerText = "Hesap şu an kullanımda)";
-            document.getElementById('login-error').style.display = 'block';
-            setTimeout(() => document.getElementById('login-error').style.display = 'none', 5000);
-            return;
-        }
-
-        kul.oturum_acik = true;
-        await saveDB();
-
         sessionStorage.setItem('prohummer_session', JSON.stringify(kul));
         oturumAc(kul);
     } else {
@@ -839,7 +825,7 @@ function oturumAc(kul) {
     document.getElementById('active-user-name').innerText = kul.isim;
     document.getElementById('active-user-role').innerText = kul.rol;
     
-    // MENÜ GİZLİLİK AYARI (Sadece admin görür)
+    // YETKİ KONTROLÜ (Sadece Admin ve Müdür)
     const adminMenuIds = ['admin-section', 'menu-kullanicilar', 'menu-ayarlar', 'bot-section', 'menu-bot'];
     const isAdmin = kul.rol === 'Süper Admin' || kul.rol === 'Müdür';
     
@@ -874,12 +860,6 @@ function oturumAc(kul) {
 }
 
 async function cikisYap() {
-    if(aktifKullanici) {
-        await sessizDBGuncelle(); // Kilidi kaldırmadan önce güncel veriyi çek
-        const kul = DB.kullanicilar.find(k => k.id === aktifKullanici.id);
-        if(kul) { kul.oturum_acik = false; await saveDB(); }
-    }
-    
     aktifKullanici = null;
     sessionStorage.removeItem('prohummer_session');
     document.getElementById('app-screen').classList.remove('active');
@@ -900,8 +880,8 @@ function toggleSidebar() {
 }
 
 async function sayfaGoster(id) {
-    if(id === 'gorevler' || id === 'dashboard' || id === 'siparisler') {
-        await sessizDBGuncelle(); // Menülere tıklanınca arka planda sessizce yeni veriyi çek!
+    if(id === 'gorevler' || id === 'dashboard' || id === 'siparisler' || id === 'sikayetler') {
+        await sessizDBGuncelle(); // Menülere tıklanınca arka planda sessizce yeni veriyi çek
     }
 
     document.querySelectorAll('.sayfa').forEach(s => s.classList.remove('active'));
@@ -960,6 +940,7 @@ function gorevleriRender() {
             </div>
         `).join('');
     }
+    
     if(isAdmin) kpiRender();
 }
 
@@ -967,12 +948,14 @@ async function gorevEkle() {
     const baslik = document.getElementById('grv-baslik').value.trim();
     const aciklama = document.getElementById('grv-aciklama').value.trim();
     const personelId = document.getElementById('grv-personel').value;
+    const personel = DB.kullanicilar.find(k => k.id === personelId);
+    
     if(!baslik) { toast('Görev başlığı zorunlu!', 'error'); return; }
     
     await sessizDBGuncelle(); // İşlemden önce güncel DB'yi çek!
     
-    const personel = DB.kullanicilar.find(k => k.id === personelId);
     const yeniGorev = { id: Date.now(), baslik, aciklama, atanan_id: personel.id, atanan_isim: personel.isim, durum: 'Bekliyor', tarih: bugunTarih() };
+    if(!DB.gorevler) DB.gorevler = [];
     DB.gorevler.push(yeniGorev);
     await saveDB();
     
@@ -997,13 +980,27 @@ async function gorevSil(id) {
     });
 }
 
+// KPI TABLOSU (Performans Raporu)
 function kpiRender() {
     const tbody = document.getElementById('kpi-tbody');
     tbody.innerHTML = DB.kullanicilar.filter(k => k.id !== 'admin').map(k => {
+        // 1. Görevler
         const pGorevler = DB.gorevler.filter(g => g.atanan_id === k.id);
-        const tamamlanan = pGorevler.filter(g => g.durum === 'Tamamlandı').length;
-        const bekleyen = pGorevler.length - tamamlanan;
-        return `<tr style="border-bottom:1px solid var(--border);"><td style="padding:12px 10px; font-weight:600; color:white;">${k.isim}</td><td style="padding:12px 10px; text-align:center; color:var(--green); font-weight:bold;">${tamamlanan}</td><td style="padding:12px 10px; text-align:center; color:var(--orange);">${bekleyen}</td></tr>`;
+        const tamamlananGorev = pGorevler.filter(g => g.durum === 'Tamamlandı').length;
+        
+        // 2. Kendi Girdiği Yeni Siparişler (İMZA)
+        const alinanSiparis = (DB.siparisler || []).filter(s => s.ekleyen === k.id).length;
+        
+        // 3. Çözülen Şikayetler (İMZA)
+        const cozulduSikayet = (DB.sikayetler || []).filter(s => s.ilgilenen === k.id && s.durum === 'Çözüldü').length;
+
+        return `
+            <tr style="border-bottom:1px solid var(--border);">
+                <td style="padding:12px 10px; font-weight:600; color:white;">${k.isim}</td>
+                <td style="padding:12px 10px; text-align:center; color:var(--green); font-weight:bold;">${tamamlananGorev}</td>
+                <td style="padding:12px 10px; text-align:center; color:var(--blue); font-weight:bold;">${alinanSiparis}</td>
+                <td style="padding:12px 10px; text-align:center; color:var(--orange); font-weight:bold;">${cozulduSikayet}</td>
+            </tr>`;
     }).join('');
 }
 
@@ -1037,7 +1034,7 @@ async function siparisEkle() {
     const maxId = Math.max(...DB.siparisler.map(s => s.id || 0), 0);
     DB.siparisler.push({
         id: maxId + 1, isim, tel, adres, urun: urun ? urun.isim : urunId, urunId, adet, not,
-        durum: 'Yeni Bekliyor', tarih: bugunTarih(), kaynak: 'Manuel'
+        durum: 'Yeni Bekliyor', tarih: bugunTarih(), kaynak: 'Manuel', ekleyen: aktifKullanici.id // SİPARİŞ İMZASI
     });
     await saveDB(); 
     closeModal('modal-siparis'); 
@@ -1123,7 +1120,19 @@ function siparisSiparisMOdalUrunDoldur() { document.getElementById('sip-urun').i
 
 async function sikayetEkle() { const isim = document.getElementById('sik-isim').value.trim(); const tel = document.getElementById('sik-tel').value.trim(); const konu = document.getElementById('sik-konu').value; const aciklama = document.getElementById('sik-aciklama').value.trim(); if (!isim) { toast('Müşteri adı gerekli!', 'error'); return; } await sessizDBGuncelle(); DB.sikayetler.push({ id: DB.sikayetler.length + 1, isim, tel, konu, aciklama, durum: 'Açık', tarih: bugunTarih() }); await saveDB(); closeModal('modal-sikayet'); ['sik-isim','sik-tel','sik-aciklama'].forEach(id => document.getElementById(id).value = ''); toast('Şikayet kaydedildi', 'success'); sikayetleriRender(); dashboardGuncelle(); }
 function sikayetleriRender() { const tbody = document.getElementById('sikayet-tbody'); const empty = document.getElementById('sikayet-empty'); if (DB.sikayetler.length === 0) { tbody.innerHTML = ''; empty.style.display = 'flex'; empty.style.flexDirection = 'column'; empty.style.alignItems = 'center'; return; } empty.style.display = 'none'; tbody.innerHTML = DB.sikayetler.map(s => `<tr><td><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)">#${s.id}</span></td><td><div style="font-weight:600;color:white">${s.isim}</div><div style="font-size:11px;color:var(--muted)">${s.tel || '—'}</div></td><td>${s.konu}</td><td style="font-size:12px;color:var(--muted)">${s.tarih}</td><td><select class="filter-select" style="font-size:12px;padding:5px 8px" onchange="sikayetDurumGuncelle(${s.id}, this.value)">${['Açık','İşlemde','Çözüldü'].map(d => `<option ${s.durum===d?'selected':''}>${d}</option>`).join('')}</select></td><td><div style="display:flex;gap:6px"><button class="btn btn-secondary btn-icon" onclick="sikayetDetay(${s.id})"><i class="fas fa-eye"></i></button><button class="btn btn-danger btn-icon" onclick="sikayetSil(${s.id})"><i class="fas fa-trash"></i></button></div></td></tr>`).join(''); }
-async function sikayetDurumGuncelle(id, durum) { await sessizDBGuncelle(); const s = DB.sikayetler.find(x => x.id === id); if (s) { s.durum = durum; await saveDB(); toast('Şikayet durumu güncellendi', 'info'); dashboardGuncelle(); } }
+
+async function sikayetDurumGuncelle(id, durum) { 
+    await sessizDBGuncelle(); 
+    const s = DB.sikayetler.find(x => x.id === id); 
+    if (s) { 
+        s.durum = durum; 
+        if (durum === 'Çözüldü') s.ilgilenen = aktifKullanici.id; // ŞİKAYET İMZASI (ÇÖZÜLDÜYSE)
+        await saveDB(); 
+        toast('Şikayet durumu güncellendi', 'info'); 
+        dashboardGuncelle(); 
+    } 
+}
+
 function sikayetDetay(id) { const s = DB.sikayetler.find(x => x.id === id); if (!s) return; document.getElementById('sikayet-detay-icerik').innerHTML = `<div style="background:var(--bg);border-radius:10px;padding:16px;border:1px solid var(--border)"><div class="siparis-detail-row"><strong>Müşteri</strong> <span style="font-weight:600;color:white">${s.isim}</span></div><div class="siparis-detail-row"><strong>Telefon</strong> <span>${s.tel || '—'}</span></div><div class="siparis-detail-row"><strong>Konu</strong> <span>${s.konu}</span></div><div class="siparis-detail-row"><strong>Tarih</strong> <span>${s.tarih}</span></div><div class="siparis-detail-row"><strong>Durum</strong> <span>${s.durum}</span></div>${s.aciklama ? `<div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)"><div style="font-size:11px;color:var(--muted);margin-bottom:6px">AÇIKLAMA</div><div style="font-size:13.5px;line-height:1.6">${s.aciklama}</div></div>` : ''}</div>`; openModal('modal-sikayet-detay'); }
 function sikayetSil(id) { openConfirm('Şikayet silinsin mi?', '', async () => { await sessizDBGuncelle(); DB.sikayetler = DB.sikayetler.filter(x => x.id !== id); await saveDB(); sikayetleriRender(); dashboardGuncelle(); toast('Şikayet silindi', 'warning'); }); }
 
