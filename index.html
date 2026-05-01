@@ -816,7 +816,7 @@ async function girisYap() {
     if (kul) {
         if (kul.oturum_acik && !forceLogin) {
             toast("HATA: Bu hesaba şu an başka bir cihazdan giriş yapılmış!", "error");
-            document.getElementById('login-error').innerText = "Hesap şu an kullanımda! (Zorla girmek için şifrenin sonuna * koyun)";
+            document.getElementById('login-error').innerText = "Hesap şu an kullanımda)";
             document.getElementById('login-error').style.display = 'block';
             setTimeout(() => document.getElementById('login-error').style.display = 'none', 5000);
             return;
